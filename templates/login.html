@@ -1,54 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="css/bootstrap.min.css">
+<html lang="zhCN">
+<script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+<style type="text/css">
+
+    .input_size {
+        width: 300px;
+    }
+
+    .thin_line {
+        height: 1px;
+        width: 305px;
+        margin: 5px 0 0 0;
+        background-color: #9d9d9d;
+    }
+
+
+</style>
+
+
 <head>
     <meta charset="UTF-8">
     <title>登录</title>
 </head>
-<body class="container">
+<body class="container" style="margin:10%">
 
-<div class="con"
+<div class="control-label">
 
+    <label style="font-size: 24px">自动化测试平台
 
-<form class="form-horizontal" style="padding: 100px 100px 0 0">
-    <fieldset>
-        <div id="legend" class="">
-            <legend class="">登录</legend>
-        </div>
-        <div class="control-group">
+    </label>
+    <hr class="thin_line"/>
 
-            <!-- Text input-->
-            <label class="control-label" for="input01">账号</label>
-            <input type="text" placeholder="请输入账号!" class="input-xlarge">
-        </div>
-
-        <div class="control-group">
-
-            <!-- Text input-->
-            <label class="control-label" for="input01">密码</label>
-            <input type="text" placeholder="请输入密码!" class="input-xlarge">
-        </div>
+</div>
 
 
-        <div class="control-group">
-            <div class="controls">
-                <!-- Multiple Checkboxes -->
-                <label class="checkbox">
-                    <input type="checkbox" value="保持登录">
-                    保持登录
-                </label>
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <button class="btn btn-primary">登录</button>
-                <button class="btn btn-info" style="margin-left: 20px">取消</button>
-            </div>
-        </div>
-
-    </fieldset>
+<form style="margin: 10px 0 0 5px">
+    <div class="form-group">
+        <label for="username">账号</label>
+        <input type="email" class="form-control input_size" id="username" placeholder="请输入账号!">
+    </div>
+    <div class="form-group">
+        <label for="userpass">密码</label>
+        <input type="password" class="form-control input_size" id="userpass" placeholder="请输入密码!">
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="stay_login"> 保持登录
+        </label>
+    </div>
+    <button type="submit" class="btn btn-default">登录</button>
 </form>
 
 
