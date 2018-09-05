@@ -13,7 +13,7 @@ class LoginForm(Form):
 
     def clean(self):
         username = self.cleaned_data["username"]
-        exist = User.objects.filter("username").count()
+        exist = User.objects.filter(name=username).count()
         if not exist:
             raise forms.ValidationError("用户名不存在!")
         else:

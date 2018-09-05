@@ -9,7 +9,7 @@ from user.models import User, Privilege
 from django.shortcuts import redirect
 
 
-def open_login_page(request):
+def open_login_page(request, obj):
     return render(request, "login.html")
 
 
@@ -27,8 +27,7 @@ def login(request):
         user = res_set[0]
         if str(user.password) == pwd:
             return redirect("/home")
-    print(f.errors())
-    return redirect(open_login_page, {"obj": f.errors()})
+    return redirect(open_login_page, {"obj": f})
 
 
 def init_home(request):
