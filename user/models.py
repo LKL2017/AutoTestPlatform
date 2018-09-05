@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 
 
-class Users(models.Model):
+class User(models.Model):
     """
     设置数据库
     name:用户名
@@ -19,10 +19,12 @@ class Users(models.Model):
     last_login_time = models.DateTimeField()
     create_time = models.DateTimeField()
     privilege = models.IntegerField()
+    default_mail = str(name) + "@mail.jj.cn"
+    email = models.EmailField(default=default_mail)
     id = models.AutoField(primary_key=True)
 
 
-class Privileges(models.Model):
+class Privilege(models.Model):
     """
     设置数据库
     """

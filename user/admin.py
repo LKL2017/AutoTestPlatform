@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Users, Privileges
+from .models import User, Privilege
 
-admin.site.register(Users)
-admin.site.register(Privileges)
+admin.site.register(User)
+admin.site.register(Privilege)

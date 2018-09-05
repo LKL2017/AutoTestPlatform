@@ -5,10 +5,11 @@ from django.shortcuts import render
 
 from django.shortcuts import render
 from user.form import LoginForm
-from user.models import Users, Privileges
+from user.models import User, Privilege
+from django.shortcuts import redirect
 
 
-def open_login_page(request):
+def open_login_page(request, obj):
     return render(request, "login.html")
 
 
@@ -19,8 +20,16 @@ def login(request):
     if f.is_valid():
         name = f.cleaned_data["username"]
         pwd = f.cleaned_data["userpass"]
-        user = Users.objects.filter(name=name)[0]
-        if not user:
-            if user.password == pwd:
-                return
-    return False
+        stay_login = f.cleaned_data["stay_login"]
+        res_set = User.objects.filter(name=name)
+        if len(res_set) == 0:
+            return redirect(open_login_page)
+        user = res_set[0]
+        if str(user.password) == pwd:
+            return redirect("/home")
+    return redirect(open_login_page, {"obj": f})
+
+
+def init_home(request):
+    """初始化home页面"""
+    return render(request, "home.html")
