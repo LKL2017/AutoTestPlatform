@@ -14,13 +14,13 @@ class User(models.Model):
     privilege:权限
     id:自增主键
     """
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
     last_login_time = models.DateTimeField()
     create_time = models.DateTimeField()
     privilege = models.IntegerField()
     default_mail = str(name) + "@mail.jj.cn"
-    email = models.EmailField(default=default_mail)
+    email = models.EmailField(default=default_mail, unique=True)
     id = models.AutoField(primary_key=True)
 
 
