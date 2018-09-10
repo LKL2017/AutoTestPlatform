@@ -4,6 +4,7 @@ from user import views
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('.', views.login, name="login"),
-    path("home/", views.init_home, name="home")
+    path(r'^$', views.login, name="login"),
+    path(r"^login/$", views.login, name="login"),
+    path(r'^logout$', views.logout, name="logout")
 ]

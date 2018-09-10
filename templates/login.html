@@ -29,6 +29,24 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script language="JavaScript">
+
+        $(document).ready(function () {
+
+            {% if error_not_login %}
+                alert("请重新登录!");
+
+            {% endif %}
+
+
+
+
+        })
+
+
+    </script>
+
+
 </head>
 
 <body>
@@ -41,7 +59,7 @@
                     <h3 class="panel-title">请登录</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="." method="post">{% csrf_token %}
+                    <form role="form" action="{% url "user:login" %}" method="post">{% csrf_token %}
                         <fieldset>
                             <div class="form-group">
                                 <div class="input-group">
@@ -49,18 +67,22 @@
                                            autofocus>
                                     <span class="input-group-addon">@jj.mail.cn</span>
                                 </div>
-
+                                {% if error_msg %}
+                                    <span id="show_error_msg"
+                                          style="margin-top:10px; margin-left:5px;display:block"><font
+                                            color="red">{{ error_msg }}</font></span>
+                                {% endif %}
+                                <div class="form-group" style="margin-top: 10px">
+                                    <input class="form-control" placeholder="请输入密码" name="userpass" type="password">
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="1">记住我
+                                    </label>
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <button class="btn btn-lg btn-success btn-block">登录</button>
                             </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="请输入密码" name="userpass" type="password">
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input name="remember" type="checkbox" value="1">记住我
-                                </label>
-                            </div>
-                            <!-- Change this to a button or input when using this as a form -->
-                            <button class="btn btn-lg btn-success btn-block">登录</button>
                         </fieldset>
                     </form>
                 </div>
