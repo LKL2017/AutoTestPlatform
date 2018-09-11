@@ -17,4 +17,15 @@ class Product(models.Model):
     inChargeUser = models.IntegerField(max_length=4, null=False)
     createUser = models.IntegerField(max_length=4, null=False)
     createTime = models.DateField(auto_now=True)
-    description = models.TextField()
+    desc = models.TextField()
+    status = models.IntegerField(max_length=4, null=False, default=1)
+
+
+class Status(models.Model):
+    """
+    产品状态表
+    status:产品的状态
+    desc:该状态的具体描述
+    """
+    status = models.CharField(max_length=40, unique=True, null=False)
+    desc = models.TextField()
