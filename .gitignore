@@ -106,6 +106,7 @@ venv.bak/
 .mypy_cache/
 
 .idea/inspectionProfiles/
+.idea/vcs.xml
 .idea/workspace.xml
 venv/bin/__pycache__/
 venv/include/
@@ -206,8 +207,8 @@ venv/lib/python3.6/site-packages/django/contrib/flatpages/templatetags/__pycache
 venv/lib/python3.6/site-packages/django/contrib/gis/__pycache__/
 venv/lib/python3.6/site-packages/django/contrib/gis/admin/__pycache__/
 venv/lib/python3.6/site-packages/django/contrib/gis/db/__pycache__/
-venv/lib/python3.6/site-packages/djang
-o/contrib/gis/db/backends/__pycache__/
+venv/lib/py
+thon3.6/site-packages/django/contrib/gis/db/backends/__pycache__/
 venv/lib/python3.6/site-packages/django/contrib/gis/db/backends/base/__pycache__/
 venv/lib/python3.6/site-packages/django/contrib/gis/db/backends/mysql/__pycache__/
 venv/lib/python3.6/site-packages/django/contrib/gis/db/backends/oracle/__pycache__/
