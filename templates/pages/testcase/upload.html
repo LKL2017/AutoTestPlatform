@@ -7,31 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>Test Automation Home</title>
+
+
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
-
     <!-- MetisMenu CSS -->
     <link href="{% static 'css/metisMenu.min.css' %}" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-
+    <!-- Morris Charts CSS -->
+    <link href="{% static 'css/morris.css' %}" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 
-    {#    定义一下部分Margin#}
-    <style type="text/css">
-
-        .label-margin {
-
-            font-style: normal;
-            text-decoration-color: #f8f8f8;
-            margin-left: 20px;
-
-        }
-
-
-    </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,6 +28,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 
 </head>
 
@@ -334,174 +324,194 @@
     </nav>
 
     <div id="page-wrapper">
-        <!-- title row -->
-        <!-- /.col-lg-12 -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">产品详情</h1>
+                <h1 class="page-header">导入测试用例</h1>
             </div>
-
+            <!-- /.col-lg-12 -->
         </div>
+        <!-- /.row -->
         <div class="row">
-            <div class="col-lg-4" id="divOtherInfo">
-
+            <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        历史记录
+                        从XML文件导入测试用例
                     </div>
                     <div class="panel-body">
-                        <p>该面板用于展示产品操作的历史记录.</p>
-                        <p>该面板用于展示产品操作的历史记录.</p>
-                        <p>该面板用于展示产品操作的历史记录.</p>
-                        <p>该面板用于展示产品操作的历史记录.</p>
-                        <p>该面板用于展示产品操作的历史记录.</p>
-                        <p>该面板用于展示产品操作的历史记录.</p>
-                        <p>该面板用于展示产品操作的历史记录.</p>
-                        <p>该面板用于展示产品操作的历史记录.</p>
-                    </div>
-                    <div class="panel-footer">
-                        <a>更多...</a>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
 
-                    </div>
-                    <div class="panel-body">
-                        <p>该面板用于展示该产品的关联测试用例列表.</p>
-                        <p>该面板用于展示该产品的关联测试用例列表.</p>
-                        <p>该面板用于展示该产品的关联测试用例列表.</p>
-                        <p>该面板用于展示该产品的关联测试用例列表.</p>
-                        <p>该面板用于展示该产品的关联测试用例列表.</p>
-                    </div>
-                    <div class="panel-footer">
-                        <a href="{% url "testcase:upload" %}">添加测试用例</a>
-                    </div>
-                </div>
-
-            </div>
+                        <div class="alert alert-info">
+                            <P>从XML文件中导入测试用例到系统，请下载相应的Excel文件编辑测试用例后，生成XML文件</P>
+                            <P>请注意，一定要将XML文件的编码格式保存为UTF-8</P>
+                            <P>EXCEL文件下载为
+                                <a href="#">点击这里</a>
+                            </P>
+                        </div>
 
 
-            <div class="col-lg-8" id="divProductInfo">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form role="form">
 
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <button class="btn btn-default btn-xs disabled">{{ relatedData.pid }}</button>
-                        <label class="header" style="margin-left: 10px;">{{ relatedData.name }}</label>
-                    </div>
-                    <div class="panel-body">
-                        <div id="statusAndDesc" class="row col-lg-12">
-                            <div class="row">
-                                <div class="col-lg-1 text-left">
+                                    <p class="info">
+                                        <label>添加者</label>
+                                        <span style="margin-left: 15px;">{{ user }}</span>
+                                    </p>
 
-                                    {% if relatedData.status == "正常" %}
-                                        <button class="btn btn-success btn-xs disabled">正常</button>
+                                    <div class="form-group">
+                                        <label>请选择产品</label>
+                                        <select class="form-control">
 
-                                    {% elif relatedData.status == "完成" %}
-                                        <button class="btn btn-primary btn-xs disabled">完成</button>
-                                    {% else %}
-                                        <button class="btn btn-warning btn-xs disabled">{{ relatedData.status }}</button>
-                                    {% endif %}
+                                            {% for product in products %}
+                                                <option>{{ product }}</option>
+                                            {% endfor %}
+                                        </select>
 
-                                </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>请选择文件</label>
+                                        <input type="file" style="display: none;" id="leFile">
+                                        <div class="input-group">
+                                            <input id="photoCover" class="form-control" type="text"
+                                                   style="height:30px;">
+                                            <span class="input-group-addon">
+													<a href="#" id="caseFile" onclick="$('input[id=leFile]').click();">Browse</a>
+												</span>
+
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-default">Submit Button</button>
+
+                                </form>
                             </div>
+                            <!-- /.col-lg-6 (nested) -->
+                            <div class="col-lg-6" id="divProductInfo">
 
-                            <div class="row">
-                                <div class="col-lg-12 text-left" style="margin-top: 10px;">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <button class="btn btn-default btn-xs disabled">{{ relatedData.pid }}</button>
+                                        <label class="header" style="margin-left: 10px;">{{ relatedData.name }}</label>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="statusAndDesc" class="row col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-1 text-left">
+
+                                                    {% if relatedData.status == "正常" %}
+                                                        <button class="btn btn-success btn-xs disabled">正常</button>
+
+                                                    {% elif relatedData.status == "完成" %}
+                                                        <button class="btn btn-primary btn-xs disabled">完成</button>
+                                                    {% else %}
+                                                        <button class="btn btn-warning btn-xs disabled">{{ relatedData.status }}</button>
+                                                    {% endif %}
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-12 text-left" style="margin-top: 10px;">
 										<span class="info" id="pDesc">
 											一个用于展示的产品例子
 										</span>
 
-                                </div>
+                                                </div>
 
 
-                            </div>
-                        </div>
+                                            </div>
+                                        </div>
 
-                        <div class="row col-lg-12">
-                            <hr/>
-                            <div class="row col-lg-12 text-left">
-                                <label class="header">负责人</label>
-                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                    <div class="row col-lg-12 text-left">
+                                        <div class="row col-lg-12">
+                                            <hr/>
+                                            <div class="row col-lg-12 text-left">
+                                                <label class="header">负责人</label>
+                                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
+                                                    <div class="row col-lg-12 text-left">
 											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;产品负责人
 											</span>
-                                        <label style="margin-left: 20px;">{{ relatedData.manager }}</label>
-                                    </div>
-                                    <div class="row col-lg-12 text-left">
+                                                        <label style="margin-left: 20px;">{{ relatedData.manager }}</label>
+                                                    </div>
+                                                    <div class="row col-lg-12 text-left">
 											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;测试负责人
 											</span>
-                                        <label style="margin-left: 25px;">{{ relatedData.incharge_user }}</label>
-                                    </div>
-                                </div>
-                            </div>
+                                                        <label style="margin-left: 25px;">{{ relatedData.incharge_user }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
-                        </div>
-                        <div class="row col-lg-12">
-                            <hr/>
-                            <div class="row col-lg-12 text-left">
-                                <label class="header">基本信息</label>
-                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                    <div class="row col-lg-12 text-left">
+                                        </div>
+                                        <div class="row col-lg-12">
+                                            <hr/>
+                                            <div class="row col-lg-12 text-left">
+                                                <label class="header">基本信息</label>
+                                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
+                                                    <div class="row col-lg-12 text-left">
 											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;由谁创建
 											</span>
-                                        <label style="margin-left: 20px;">{{ relatedData.create_user }}</label>
-                                    </div>
-                                    <div class="row col-lg-12 text-left">
+                                                        <label style="margin-left: 20px;">{{ relatedData.create_user }}</label>
+                                                    </div>
+                                                    <div class="row col-lg-12 text-left">
 											<span class="fa fa-calendar-times-o"
                                                   style="margin-left: 30px;">&nbsp;&nbsp;创建时间
 											</span>
-                                        <label style="margin-left: 20px;">{{ relatedData.create_time }}</label>
-                                    </div>
-                                    <div class="row col-lg-12 text-left">
+                                                        <label style="margin-left: 20px;">{{ relatedData.create_time }}</label>
+                                                    </div>
+                                                    <div class="row col-lg-12 text-left">
 											<span class="fa fa-warning" style="margin-left: 30px;">&nbsp;&nbsp;访问控制
 											</span>
-                                        <label style="margin-left: 20px;">{{ relatedData.privileges }}</label>
+                                                        <label style="margin-left: 20px;">{{ relatedData.privileges }}</label>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="row col-lg-12">
+                                            <hr/>
+                                            <div class="row col-lg-12 text-left">
+                                                <label class="header">其他信息</label>
+                                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
+                                                    <ul>
+                                                        <li class="list-unstyled">关联需求<span
+                                                                style="margin-left: 15px;">0</span></li>
+                                                        <li class="list-unstyled" style="margin-top: 5px;">测试用例<span
+                                                                style="margin-left: 15px;">{{ relatedData.test_case_count }}</span>
+                                                        </li>
+                                                        <li class="list-unstyled" style="margin-top: 5px;">关联任务<span
+                                                                style="margin-left: 15px;">{{ relatedData.task_count }}</span>
+                                                        </li>
+                                                    </ul>
+
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
                                     </div>
-
+                                    <div class="panel-footer">
+                                        End
+                                    </div>
                                 </div>
+
 
                             </div>
 
                         </div>
-                        <div class="row col-lg-12">
-                            <hr/>
-                            <div class="row col-lg-12 text-left">
-                                <label class="header">其他信息</label>
-                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                    <ul>
-                                        <li class="list-unstyled">关联需求<span style="margin-left: 15px;">0</span></li>
-                                        <li class="list-unstyled" style="margin-top: 5px;">测试用例<span
-                                                style="margin-left: 15px;">{{ relatedData.test_case_count }}</span></li>
-                                        <li class="list-unstyled" style="margin-top: 5px;">关联任务<span
-                                                style="margin-left: 15px;">{{ relatedData.task_count }}</span></li>
-                                    </ul>
-
-
-                                </div>
-                            </div>
-
-
-                        </div>
-
+                        <!-- /.row (nested) -->
                     </div>
-                    <div class="panel-footer">
-                        End
-                    </div>
+                    <!-- /.panel-body -->
                 </div>
-
-
+                <!-- /.panel -->
             </div>
-
-
+            <!-- /.col-lg-12 -->
         </div>
-
-
         <!-- /.row -->
     </div>
     <!-- /#page-wrapper -->
-
 </div>
 <!-- /#wrapper -->
 
@@ -514,8 +524,23 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="{% static 'js/metisMenu.min.js' %}"></script>
 
+<!-- Morris Charts JavaScript -->
+<script src="{% static 'js/raphael.min.js' %}"></script>
+<script src="{% static 'js/morris.min.js' %}"></script>
+<script src="{% static 'data/morris-data.js' %}"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="{% static 'js/custom.min.js' %}"></script>
+
+<script type="text/javascript">
+
+    $('input[id=leFile]').change(function () {
+        $('#photoCover').val($(this).val());
+    });
+
+
+</script>
+
 
 </body>
 

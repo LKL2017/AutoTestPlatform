@@ -16,7 +16,7 @@ def init_product_info(request):
         # 从数据库中取出所有的产品列表
         products = Product.objects.all()
         if products.count() == 0:
-            return render(request, "pages/tables.html")
+            return render(request, "pages/product/productList.html")
         data_list = []
 
         # 减少数据库IO操作，在此查询所有的产品状态，并且生成一个DICT
@@ -41,7 +41,7 @@ def init_product_info(request):
                                        status=status_dict.get(product_status), manager=product.manager)
             data_list.append(product_data)
         else:
-            return render(request, "pages/tables.html", {"products": data_list})
+            return render(request, "pages/product/productList.html", {"products": data_list})
 
 
 def product_detail(request, name=None):
