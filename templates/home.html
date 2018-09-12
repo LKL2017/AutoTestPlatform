@@ -234,10 +234,11 @@
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 产品<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="./pages/morris.html">产品一览</a>
+                                <a href="{% url "product:info" %}">产品一览</a>
                             </li>
                             <li>
-                                <a href="./pages/morris.html">产品管理</a>
+                                {#                                TODO 增加产品管理相关功能#}
+                                <a href="#">产品管理</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -252,7 +253,7 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> 执行<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="./pages/panels-wells.html">Panels and Wells</a>
+                                <a href="pages/product/detail.html">Panels and Wells</a>
                             </li>
                             <li>
                                 <a href="./pages/buttons.html">Buttons</a>

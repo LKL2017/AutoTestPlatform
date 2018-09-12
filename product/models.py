@@ -14,11 +14,12 @@ class Product(models.Model):
     description:产品的描述
     """
     name = models.CharField(max_length=255, unique=True, null=False)
-    inChargeUser = models.IntegerField(max_length=4, null=False)
-    createUser = models.IntegerField(max_length=4, null=False)
+    inChargeUser = models.IntegerField(null=False)
+    createUser = models.IntegerField(null=False)
     createTime = models.DateField(auto_now=True)
     desc = models.TextField()
-    status = models.IntegerField(max_length=4, null=False, default=1)
+    status = models.IntegerField(null=False, default=1)
+    manager = models.CharField(max_length=50, default="暂无")
 
 
 class Status(models.Model):
