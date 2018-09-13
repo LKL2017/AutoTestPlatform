@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Test Automation Home</title>
+    <title>Test Automation</title>
 
 
     <!-- Bootstrap Core CSS -->
@@ -18,15 +18,6 @@
     <link href="{% static 'css/custom.css' %}" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 
 </head>
 
@@ -344,10 +335,8 @@
                                 <a href="#">点击这里</a>
                             </P>
                         </div>
-
-
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <form role="form">
 
                                     <p class="info">
@@ -383,9 +372,9 @@
                                 </form>
                             </div>
                             <!-- /.col-lg-6 (nested) -->
-                            <div class="col-lg-6" id="divProductInfo">
+                            <div class="col-lg-8" id="divProductInfo">
 
-                                <div class="panel panel-info">
+                                <div class="panel panel-success">
                                     <div class="panel-heading">
                                         <button class="btn btn-default btn-xs disabled"
                                                 id="p_id">{{ relatedData.pid }}</button>
@@ -399,11 +388,13 @@
                                                     <button class="btn btn-warning btn-xs disabled"
                                                             id="p_status">未获取
                                                     </button>
+
                                                 </div>
                                             </div>
+
                                             <div class="row">
                                                 <div class="col-lg-12 text-left" style="margin-top: 10px;">
-										<span class="info" id="p_desc">
+										<span class="info" id="pDesc">
 											{{ relatedData.desc }}
 										</span>
 
@@ -415,89 +406,102 @@
 
                                         <div class="row col-lg-12">
                                             <hr/>
-                                            <div class="row col-lg-12 text-left">
                                                 <label class="header">负责人</label>
-                                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;产品负责人
-											</span>
-                                                        <label style="margin-left: 20px;"
-                                                               id="p_manager">{{ relatedData.manager }}</label>
-                                                    </div>
-                                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-user" style="margin-left: 30px;" id="p_tester">&nbsp;&nbsp;测试负责人
-											</span>
-                                                        <label style="margin-left: 25px;">{{ relatedData.incharge_user }}</label>
-                                                    </div>
-                                                </div>
                                             </div>
+                                        <div class="row col-lg-8 text-left" style="margin-top: 20px;">
+
+                                            <table class="table  table-hover" style="margin-left: 50px">
+                                                <tr>
+                                                    <td class="col-lg-3">
+                                                <span class="fa fa-user"
+                                                      style="margin-left: 30px;">&nbsp;&nbsp;产品负责人</span>
+                                                    </td>
+                                                    <td class="col-lg-5">
+                                                            <span style="margin-left: 20px;"
+                                                                  id="p_manager">{{ relatedData.manager }}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                            <span class="fa fa-calendar-times-o"
+                                                                  style="margin-left: 30px;">&nbsp;&nbsp;测试负责人</span>
+                                                    </td>
+                                                    <td>
+                                                        <span style="margin-left: 25px;">{{ relatedData.incharge_user }}</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
 
 
                                         </div>
                                         <div class="row col-lg-12">
                                             <hr/>
-                                            <div class="row col-lg-12 text-left">
                                                 <label class="header">基本信息</label>
-                                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;由谁创建
-											</span>
-                                                        <label style="margin-left: 20px;"
-                                                               id="p_create_user">{{ relatedData.create_user }}</label>
-                                                    </div>
-                                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-calendar-times-o"
-                                                  style="margin-left: 30px;">&nbsp;&nbsp;创建时间
-											</span>
-                                                        <label style="margin-left: 20px;"
-                                                               id="p_create_time">{{ relatedData.create_time }}</label>
-                                                    </div>
-                                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-warning" style="margin-left: 30px;">&nbsp;&nbsp;访问控制
-											</span>
-                                                        <label style="margin-left: 20px;"
-                                                               id="p_privileges">{{ relatedData.privileges }}</label>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
+                                        </div>
+                                        <div class="row col-lg-8 text-left" style="margin-top: 20px;">
+                                            <table class="table  table-hover" style="margin-left: 50px">
+                                                <tr>
+                                                    <td class="col-lg-3">
+                                                <span class="fa fa-user"
+                                                      style="margin-left: 30px;">&nbsp;&nbsp;由谁创建</span>
+                                                    </td>
+                                                    <td class="col-lg-5">
+                                                            <span style="margin-left: 20px;"
+                                                                  id="p_create_user">{{ relatedData.create_user }}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                            <span class="fa fa-calendar-times-o"
+                                                                  style="margin-left: 30px;">&nbsp;&nbsp;创建时间</span>
+                                                    </td>
+                                                    <td>
+                                                          <span style="margin-left: 20px;"
+                                                                id="p_create_time">{{ relatedData.create_time }}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                <span class="fa fa-warning"
+                                                      style="margin-left: 30px;">&nbsp;&nbsp;访问控制</span>
+                                                    </td>
+                                                    <td>
+                                                            <span style="margin-left: 20px;"
+                                                                  id="p_privileges">{{ relatedData.privileges }}</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                         <div class="row col-lg-12">
                                             <hr/>
-                                            <div class="row col-lg-12 text-left">
                                                 <label class="header">其他信息</label>
                                                 <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                                    <ul>
-                                                        <li class="list-unstyled">关联需求<span
-                                                                style="margin-left: 15px;">0</span></li>
-                                                        <li class="list-unstyled" style="margin-top: 5px;">测试用例<span
-                                                                style="margin-left: 15px;"
-                                                                id="p_testcase_count">{{ relatedData.test_case_count }}</span>
-                                                        </li>
-                                                        <li class="list-unstyled" style="margin-top: 5px;">关联任务<span
-                                                                style="margin-left: 15px;"
-                                                                id="p_task_count">{{ relatedData.task_count }}</span>
-                                                        </li>
-                                                    </ul>
-
-
+                                                    <table class="table  table-hover" style="margin-left: 50px">
+                                                        <tr>
+                                                            <td class="col-lg-3">
+                                                                <span class="fa fa-bar-chart-o"
+                                                                      style="margin-left: 30px;">&nbsp;&nbsp;测试用例</span>
+                                                            </td>
+                                                            <td class="col-lg-5">
+                                                                <span id="p_testcase_count">{{ relatedData.test_case_count }}</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                <span class="fa fa-tasks"
+                                                      style="margin-left: 30px;">&nbsp;&nbsp;关联任务</span>
+                                                            </td>
+                                                            <td>
+                                                                <span id="p_task_count">{{ relatedData.task_count }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
                                             </div>
-
-
                                         </div>
-
-                                    </div>
-                                    <div class="panel-footer">
-                                        End
                                     </div>
                                 </div>
-
-
                             </div>
-
                         </div>
                         <!-- /.row (nested) -->
                     </div>

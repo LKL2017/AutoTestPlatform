@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>Test Automation Home</title>
+
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
 
@@ -32,13 +34,6 @@
 
 
     </style>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
 </head>
 
@@ -420,74 +415,95 @@
 
                         <div class="row col-lg-12">
                             <hr/>
-                            <div class="row col-lg-12 text-left">
                                 <label class="header">负责人</label>
-                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;产品负责人
-											</span>
-                                        <label style="margin-left: 20px;">{{ relatedData.manager }}</label>
-                                    </div>
-                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;测试负责人
-											</span>
-                                        <label style="margin-left: 25px;">{{ relatedData.incharge_user }}</label>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="row col-lg-8 text-left" style="margin-top: 20px;">
+
+                            <table class="table  table-hover" style="margin-left: 50px">
+                                <tr>
+                                    <td class="col-lg-3">
+                                                <span class="fa fa-user"
+                                                      style="margin-left: 30px;">&nbsp;&nbsp;产品负责人</span>
+                                    </td>
+                                    <td class="col-lg-5">
+                                        {{ relatedData.manager }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="fa fa-calendar-times-o" style="margin-left: 30px;">&nbsp;&nbsp;测试负责人</span>
+                                    </td>
+                                    <td>
+                                        {{ relatedData.incharge_user }}
+                                    </td>
+                                </tr>
+                            </table>
 
 
                         </div>
                         <div class="row col-lg-12">
                             <hr/>
-                            <div class="row col-lg-12 text-left">
                                 <label class="header">基本信息</label>
-                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;由谁创建
-											</span>
-                                        <label style="margin-left: 20px;">{{ relatedData.create_user }}</label>
-                                    </div>
-                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-calendar-times-o"
-                                                  style="margin-left: 30px;">&nbsp;&nbsp;创建时间
-											</span>
-                                        <label style="margin-left: 20px;">{{ relatedData.create_time }}</label>
-                                    </div>
-                                    <div class="row col-lg-12 text-left">
-											<span class="fa fa-warning" style="margin-left: 30px;">&nbsp;&nbsp;访问控制
-											</span>
-                                        <label style="margin-left: 20px;">{{ relatedData.privileges }}</label>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
+                        </div>
+                        <div class="row col-lg-8 text-left" style="margin-top: 20px;">
+                            <table class="table  table-hover" style="margin-left: 50px">
+                                <tr>
+                                    <td class="col-lg-3">
+                                                <span class="fa fa-user"
+                                                      style="margin-left: 30px;">&nbsp;&nbsp;由谁创建</span>
+                                    </td>
+                                    <td class="col-lg-5">
+                                        {{ relatedData.create_user }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="fa fa-calendar-times-o"
+                                              style="margin-left: 30px;">&nbsp;&nbsp;创建时间</span>
+                                    </td>
+                                    <td>
+                                        {{ relatedData.create_time }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                                <span class="fa fa-warning"
+                                                      style="margin-left: 30px;">&nbsp;&nbsp;访问控制</span>
+                                    </td>
+                                    <td>
+                                        {{ relatedData.privileges }}
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="row col-lg-12">
                             <hr/>
-                            <div class="row col-lg-12 text-left">
                                 <label class="header">其他信息</label>
-                                <div class="row col-lg-12 text-left" style="margin-top: 20px;">
-                                    <ul>
-                                        <li class="list-unstyled">关联需求<span style="margin-left: 15px;">0</span></li>
-                                        <li class="list-unstyled" style="margin-top: 5px;">测试用例<span
-                                                style="margin-left: 15px;">{{ relatedData.test_case_count }}</span></li>
-                                        <li class="list-unstyled" style="margin-top: 5px;">关联任务<span
-                                                style="margin-left: 15px;">{{ relatedData.task_count }}</span></li>
-                                    </ul>
-
-
-                                </div>
-                            </div>
-
-
                         </div>
-
+                        <div class="row col-lg-8 text-left" style="margin-top: 20px;">
+                            <table class="table  table-hover" style="margin-left: 50px">
+                                <tr>
+                                    <td class="col-lg-3">
+                                        <span class="fa fa-bar-chart-o"
+                                              style="margin-left: 30px;">&nbsp;&nbsp;测试用例</span>
+                                    </td>
+                                    <td class="col-lg-5">
+                                        {{ relatedData.test_case_count }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                                <span class="fa fa-tasks"
+                                                      style="margin-left: 30px;">&nbsp;&nbsp;关联任务</span>
+                                    </td>
+                                    <td>
+                                        {{ relatedData.task_count }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <div class="panel-footer">
-                        End
+                </div>
                     </div>
                 </div>
 
@@ -503,6 +519,7 @@
     <!-- /#page-wrapper -->
 
 </div>
+
 <!-- /#wrapper -->
 
 <!-- jQuery -->
