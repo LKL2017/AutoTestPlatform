@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from product.models import Product
+from product import views as pViews
 
 
 # Create your views here.
@@ -13,7 +14,9 @@ def init_upload_page(request):
         # 获取所有的产品列表，然后传回并且生成select列表
         product_query_set = Product.objects.all()
         products = [product.name for product in product_query_set]
-        print(products)
-        return render(request, "pages/testcase/upload.html", {"user": name, "products": products})
+        # 获取第一个产品的相关详细信息，并且传递到前端页面
+        first_product = pViews.product_detail_no_request(products[0])
+        return render(request, "pages/testcase/upload.html",
+                      {"user": name, "products": products, "relatedData": first_product})
     if request.method == "POST":
         pass

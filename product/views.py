@@ -67,3 +67,18 @@ def product_detail(request, name=None):
         return render(request, "pages/product/detail.html", {"relatedData": relatedData})
     if request.method == "POST":
         return JsonResponse(relatedData.__dict__)
+
+
+def product_detail_no_request(name=None):
+    """用于获取产品的相关信息并且返回"""
+    product = Product.objects.filter(name=name)[0]
+    create_user_name = User.objects.filter(id=product.createUser)[0].name
+    incharge_user = User.objects.filter(id=product.inChargeUser)[0].name
+    status = Status.objects.filter(id=product.status)[0].status
+    relatedData = ProductRelatedData(product.id, name, create_user_name, incharge_user, product.createTime, status,
+                                     product.manager, product.desc)
+    # TODO 需要添加产品相关的统计数据
+    relatedData.privileges = None
+    relatedData.task_count = 0
+    relatedData.test_case_count = 0
+    return relatedData

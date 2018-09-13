@@ -380,7 +380,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-default">Submit Button</button>
+                                    <button type="submit" class="btn btn-default">提交</button>
 
                                 </form>
                             </div>
@@ -389,8 +389,10 @@
 
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
-                                        <button class="btn btn-default btn-xs disabled">ID</button>
-                                        <label class="header" style="margin-left: 10px;">产品名</label>
+                                        <button class="btn btn-default btn-xs disabled"
+                                                id="p_id">{{ relatedData.pid }}</button>
+                                        <label class="header" style="margin-left: 10px;"
+                                               id="p_name">{{ relatedData.name }}</label>
                                     </div>
                                     <div class="panel-body">
                                         <div id="statusAndDesc" class="row col-lg-12">
@@ -403,7 +405,8 @@
                                                     {% elif relatedData.status == "完成" %}
                                                         <button class="btn btn-primary btn-xs disabled">完成</button>
                                                     {% else %}
-                                                        <button class="btn btn-warning btn-xs disabled">{{ relatedData.status }}</button>
+                                                        <button class="btn btn-warning btn-xs disabled"
+                                                                id="p_status">{{ relatedData.status }}</button>
                                                     {% endif %}
 
                                                 </div>
@@ -411,8 +414,8 @@
 
                                             <div class="row">
                                                 <div class="col-lg-12 text-left" style="margin-top: 10px;">
-										<span class="info" id="pDesc">
-											一个用于展示的产品例子
+										<span class="info" id="p_desc">
+											{{ relatedData.desc }}
 										</span>
 
                                                 </div>
@@ -429,10 +432,11 @@
                                                     <div class="row col-lg-12 text-left">
 											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;产品负责人
 											</span>
-                                                        <label style="margin-left: 20px;">{{ relatedData.manager }}</label>
+                                                        <label style="margin-left: 20px;"
+                                                               id="p_manager">{{ relatedData.manager }}</label>
                                                     </div>
                                                     <div class="row col-lg-12 text-left">
-											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;测试负责人
+											<span class="fa fa-user" style="margin-left: 30px;" id="p_tester">&nbsp;&nbsp;测试负责人
 											</span>
                                                         <label style="margin-left: 25px;">{{ relatedData.incharge_user }}</label>
                                                     </div>
@@ -449,18 +453,21 @@
                                                     <div class="row col-lg-12 text-left">
 											<span class="fa fa-user" style="margin-left: 30px;">&nbsp;&nbsp;由谁创建
 											</span>
-                                                        <label style="margin-left: 20px;">{{ relatedData.create_user }}</label>
+                                                        <label style="margin-left: 20px;"
+                                                               id="p_create_user">{{ relatedData.create_user }}</label>
                                                     </div>
                                                     <div class="row col-lg-12 text-left">
 											<span class="fa fa-calendar-times-o"
                                                   style="margin-left: 30px;">&nbsp;&nbsp;创建时间
 											</span>
-                                                        <label style="margin-left: 20px;">{{ relatedData.create_time }}</label>
+                                                        <label style="margin-left: 20px;"
+                                                               id="p_create_time">{{ relatedData.create_time }}</label>
                                                     </div>
                                                     <div class="row col-lg-12 text-left">
 											<span class="fa fa-warning" style="margin-left: 30px;">&nbsp;&nbsp;访问控制
 											</span>
-                                                        <label style="margin-left: 20px;">{{ relatedData.privileges }}</label>
+                                                        <label style="margin-left: 20px;"
+                                                               id="p_privileges">{{ relatedData.privileges }}</label>
                                                     </div>
 
                                                 </div>
@@ -477,10 +484,12 @@
                                                         <li class="list-unstyled">关联需求<span
                                                                 style="margin-left: 15px;">0</span></li>
                                                         <li class="list-unstyled" style="margin-top: 5px;">测试用例<span
-                                                                style="margin-left: 15px;">{{ relatedData.test_case_count }}</span>
+                                                                style="margin-left: 15px;"
+                                                                id="p_testcase_count">{{ relatedData.test_case_count }}</span>
                                                         </li>
                                                         <li class="list-unstyled" style="margin-top: 5px;">关联任务<span
-                                                                style="margin-left: 15px;">{{ relatedData.task_count }}</span>
+                                                                style="margin-left: 15px;"
+                                                                id="p_task_count">{{ relatedData.task_count }}</span>
                                                         </li>
                                                     </ul>
 
@@ -539,6 +548,14 @@
     });
 
 
+    $(document).ready(function () {
+        var status = '{{ relatedData.status }}';
+        $("#p_status").css()
+
+
+    });
+
+
     $("#products").change(function () {
         var productName = $(this).val();
         $.ajax({
@@ -547,7 +564,17 @@
                 data: {'name': productName, csrfmiddlewaretoken: '{{ csrf_token }}'},
                 dataType: "json",
                 success: function (data) {
-                    console.log(data);
+                    {# 解析Json数据#}
+                    var jsonObj = JSON.parse(data);
+                    $("#p_id").val(jsonObj.pid);
+                    $("#p_create_time").innerHTML = jsonObj.create_time;
+                    $("#p_create_user").innerHTML = jsonObj.create_user;
+                    $("#p_desc").innerHTML = jsonObj.create_user;
+                    $("#p_manager").innerHTML = jsonObj.create_user;
+                    $("#p_name").innerHTML = jsonObj.create_user;
+                    $("#p_privileges").innerHTML = jsonObj.create_user;
+                    $("#p_status")
+
 
                 },
                 error: function (data) {
