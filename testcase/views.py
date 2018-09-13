@@ -20,3 +20,8 @@ def init_upload_page(request):
                       {"user": name, "products": products, "relatedData": first_product})
     if request.method == "POST":
         pass
+
+
+def init_case_list(request):
+    if request.method == "GET":
+        return render(request, "pages/testcase/list.html")

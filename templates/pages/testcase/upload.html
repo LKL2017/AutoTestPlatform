@@ -16,8 +16,6 @@
     <link href="{% static 'css/metisMenu.min.css' %}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-    <!-- Morris Charts CSS -->
-    <link href="{% static 'css/morris.css' %}" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 
@@ -398,20 +396,11 @@
                                         <div id="statusAndDesc" class="row col-lg-12">
                                             <div class="row">
                                                 <div class="col-lg-1 text-left">
-
-                                                    {% if relatedData.status == "正常" %}
-                                                        <button class="btn btn-success btn-xs disabled">正常</button>
-
-                                                    {% elif relatedData.status == "完成" %}
-                                                        <button class="btn btn-primary btn-xs disabled">完成</button>
-                                                    {% else %}
-                                                        <button class="btn btn-warning btn-xs disabled"
-                                                                id="p_status">{{ relatedData.status }}</button>
-                                                    {% endif %}
-
+                                                    <button class="btn btn-warning btn-xs disabled"
+                                                            id="p_status">未获取
+                                                    </button>
                                                 </div>
                                             </div>
-
                                             <div class="row">
                                                 <div class="col-lg-12 text-left" style="margin-top: 10px;">
 										<span class="info" id="p_desc">
@@ -533,11 +522,6 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="{% static 'js/metisMenu.min.js' %}"></script>
 
-<!-- Morris Charts JavaScript -->
-<script src="{% static 'js/raphael.min.js' %}"></script>
-<script src="{% static 'js/morris.min.js' %}"></script>
-<script src="{% static 'data/morris-data.js' %}"></script>
-
 <!-- Custom Theme JavaScript -->
 <script src="{% static 'js/custom.min.js' %}"></script>
 
@@ -548,11 +532,29 @@
     });
 
 
+    function changeStatus(status) {
+
+        $("#p_status").html(status);
+        if (String(status) === "完成") {
+            $("#p_status").removeClass();
+            $("#p_status").addClass("btn btn-success btn-xs disabled")
+
+        }
+        else if (String(status) === "正常") {
+            $("#p_status").removeClass();
+            $("#p_status").addClass("btn btn-success btn-xs disabled");
+        }
+        else {
+            $("#p_status").removeClass();
+            $("#p_status").addClass("btn btn-warning btn-xs disabled");
+        }
+
+
+    }
+
+
     $(document).ready(function () {
-        var status = '{{ relatedData.status }}';
-        $("#p_status").css()
-
-
+        changeStatus("{{ relatedData.status }}")
     });
 
 
@@ -564,18 +566,21 @@
                 data: {'name': productName, csrfmiddlewaretoken: '{{ csrf_token }}'},
                 dataType: "json",
                 success: function (data) {
+                    console.log(data);
+
                     {# 解析Json数据#}
-                    var jsonObj = JSON.parse(data);
-                    $("#p_id").val(jsonObj.pid);
-                    $("#p_create_time").innerHTML = jsonObj.create_time;
-                    $("#p_create_user").innerHTML = jsonObj.create_user;
-                    $("#p_desc").innerHTML = jsonObj.create_user;
-                    $("#p_manager").innerHTML = jsonObj.create_user;
-                    $("#p_name").innerHTML = jsonObj.create_user;
-                    $("#p_privileges").innerHTML = jsonObj.create_user;
-                    $("#p_status")
-
-
+                    var jsonObj = data;
+                    console.log(jsonObj);
+                    $("#p_id").html(jsonObj.pid);
+                    $("#p_create_time").html(jsonObj.create_time);
+                    $("#p_create_user").html(jsonObj.create_user);
+                    $("#p_desc").html(jsonObj.desc);
+                    $("#p_manager").html(jsonObj.manager);
+                    $("#p_name").html(jsonObj.name);
+                    $("#p_privileges").html(jsonObj.privileges);
+                    $("#p_tester").html(jsonObj.inCharge_user);
+                    $("#p_task_count").html(jsonObj.task_count);
+                    $("#p_testcase_count").html(jsonObj.testcase_count);
                 },
                 error: function (data) {
                     console.log(data);
