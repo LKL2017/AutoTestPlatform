@@ -13,22 +13,23 @@ class ProductData:
     status:产品状态
     """
 
-    def __init__(self, _id, name, create_user, incharge_user, create_time, status, manager):
+    def __init__(self, _id, name, create_user, incharge_user, create_time, status, manager, desc):
         self.pid = _id
         self.name = name
         self.create_user = create_user
         self.incharge_user = incharge_user
-        self.create_time = create_time
+        self.create_time = str(create_time)
         self.status = status
         self.manager = manager
+        self.desc = desc
 
     def __str__(self):
         return str("产品的名字为:" + self.name + " at :" + id(self))
 
 
 class ProductRelatedData(ProductData):
-    def __init__(self, _id, name, create_user, incharge_user, create_time, status, manager):
-        super().__init__(_id, name, create_user, incharge_user, create_time, status, manager)
+    def __init__(self, _id, name, create_user, incharge_user, create_time, status, manager, desc):
+        super().__init__(_id, name, create_user, incharge_user, create_time, status, manager, desc)
         self._test_case_count = 0
         self._privileges = None
         self._task_count = 0

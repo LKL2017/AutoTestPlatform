@@ -359,7 +359,7 @@
 
                                     <div class="form-group">
                                         <label>请选择产品</label>
-                                        <select class="form-control">
+                                        <select class="form-control" id="products">
 
                                             {% for product in products %}
                                                 <option>{{ product }}</option>
@@ -389,8 +389,8 @@
 
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
-                                        <button class="btn btn-default btn-xs disabled">{{ relatedData.pid }}</button>
-                                        <label class="header" style="margin-left: 10px;">{{ relatedData.name }}</label>
+                                        <button class="btn btn-default btn-xs disabled">ID</button>
+                                        <label class="header" style="margin-left: 10px;">产品名</label>
                                     </div>
                                     <div class="panel-body">
                                         <div id="statusAndDesc" class="row col-lg-12">
@@ -536,6 +536,26 @@
 
     $('input[id=leFile]').change(function () {
         $('#photoCover').val($(this).val());
+    });
+
+
+    $("#products").change(function () {
+        var productName = $(this).val();
+        $.ajax({
+                url: '{% url "product:detailForPost" %}',
+                type: 'post',
+                data: {'name': productName, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+
+            },
+        )
     });
 
 
