@@ -19,8 +19,9 @@ class TestCase(models.Model):
     editable:可编辑状态 boolean
     case_module:所属模块 Integer
     """
-    title = models.TextField(null=False, unique=True)
-    precondition = models.TextField(default="")
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255, null=False)
+    precondition = models.TextField(max_length=255, default="")
     steps = models.TextField(null=False)
     expect = models.TextField(null=False)
     create_user = models.IntegerField(null=False)
@@ -30,12 +31,6 @@ class TestCase(models.Model):
     case_module = models.IntegerField()
     editable = models.BooleanField(default=True)
 
-    def __init__(self):
-        super(TestCase, self).__init__()
-        if self.last_edit_time is None:
-            self.last_edit_time = self.create_time
-        if self.last_edit_user is None:
-            self.last_edit_user = self.create_user
 
 
 class CaseModule(models.Model):

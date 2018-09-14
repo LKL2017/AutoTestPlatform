@@ -668,12 +668,30 @@
 <script src="{% static 'js/prettyCode/run_prettify.js' %}"></script>
 
 <script type="text/javascript">
+    function editButtonChange(element) {
+        {#			    为span按钮添加点击事件，具体的功能为当其为点击编辑时，切换input的可输入状态为可输入#}
+        {#                当其为OK时，切换input的状态为不可输入，同时发送请求，修改测试用例#}
+        status = element.html();
+        if (status === "编辑") {
+            element.prev().removeAttr("disabled");
+            element.html("OK");
+            element.removeClass("btn-danger");
+            element.addClass("btn-success");
+        } else if (status === "OK") {
+            element.prev().attr("disabled", "disabled");
+            element.html("编辑");
+            element.removeClass("btn-success");
+            element.addClass("btn-danger");
+        }
+    }
+
     $(document).ready(function () {
+        $(".input-group-addon").click(function () {
+            editButtonChange($(this));
+        });
 
 
     });
-
-
 </script>
 
 </body>
