@@ -2,7 +2,8 @@ from django.shortcuts import render
 from product.models import Product
 from product import views as pViews
 from testcase.models import TestCase, CaseModule
-from user.userUtils import user_id_name_dict
+from user.userUtils import user_dict
+from testcase.dataModels import TestCaseData, TestCaseDetail
 
 
 # Create your views here.
@@ -33,24 +34,29 @@ def init_case_list(request):
         """
         module_queryset = CaseModule.objects.all()
         module_dict = dict(
-            [(m.id, m.name) for m in module_queryset]
+            [(m.id, m) for m in module_queryset]
         )
-        users_dict = user_id_name_dict()
+        users_dict = user_dict()
         # 请求用例列表
         case_queryset = TestCase.objects.all()
+        first_case = ""
         # 根据用例列表来进行分组，生成DICT
         module_case_dict = {}
         for _id in module_dict.keys():
-            case_list = [case.name for case in case_queryset if case.case_module == _id]
-            module_case_dict[module_dict.get(_id)] = case_list
-
+            case_list = [case.title for case in case_queryset if case.case_module == _id]
+            if first_case == "" and len(case_list) != 0:
+                first_case = case_list[0]
+            module_case_dict[module_dict.get(_id).name] = case_list
+        # 获取一个待显示的Case信息
+        first_case = case_queryset.filter(title=first_case)[0]
         # 传输数据说明：
-        # module_case_list：用于生成的左侧边栏的dict
-        # case_list：测试用例列表
+        # module_case_list：NAME:LIST
         # user_dict：用户ID:NAME 字典
-
+        # first_case：第一个需要显示的case
+        first_case_detail = TestCaseDetail(first_case)
+        first_case = TestCaseData(first_case, users_dict, module_dict)
 
         return render(request, "pages/testcase/list.html",
-                      {"module_case_dict": module_case_dict, "case_list": list(case_queryset),
-                       "user_dict": users_dict
+                      {"module_case_dict": module_case_dict, "first_case": first_case,
+                       "first_case_detail": first_case_detail
                        })
