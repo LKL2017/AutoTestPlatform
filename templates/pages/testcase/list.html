@@ -20,6 +20,7 @@
     <!-- Custom Fonts -->
     <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 
+
     {#    <link href="{% static 'js/prettyCode/prettify.css' %}" rel="stylesheet" type="text/css">#}
     <style type="text/css">
         .textarea {
@@ -571,7 +572,7 @@
                                                             </div>
                                                             <div id="steps" class="panel-collapse collapse">
                                                                 <div class="panel-body">
-                                                                    <table class="table">
+                                                                    <table class="table" id="tSteps">
                                                                         <thead>
                                                                         <tr>
                                                                             <th class="col-lg-6">测试步骤
@@ -580,7 +581,7 @@
                                                                             </th>
                                                                         </tr>
                                                                         </thead>
-
+                                                                        <tbody>
                                                                         {% for i in first_case_detail.steps|times %}
                                                                             <tr>
                                                                                 <td>
@@ -597,6 +598,7 @@
                                                                                 </td>
                                                                             </tr>
                                                                         {% endfor %}
+                                                                        </tbody>
                                                                     </table>
                                                                 </div>
                                                             </div>
@@ -633,6 +635,27 @@
 <script src="{% static 'js/custom.min.js' %}"></script>
 
 {#<script src="{% static 'js/prettyCode/run_prettify.js' %}"></script>#}
+
+<script src="{% static 'js/jsrender.min.js' %}"></script>
+
+<script id="rowTemplate" type="text/x-jsrender">
+<tr>
+<td>
+<textarea class="form-control textarea"     rows="1"    disabled="disabled"><% :td_step%></textarea>
+</td>
+<td>
+<textarea class="form-control textarea"     rows="1"    disabled="disabled"><% :td_expect %></textarea>
+</td>
+</tr>
+
+
+
+
+
+
+
+</script>
+
 
 <script type="text/javascript">
 
@@ -674,7 +697,7 @@
                 data: {'id': id, csrfmiddlewaretoken: '{{ csrf_token }}'},
                 dataType: "json",
                 success: function (data) {
-
+                    handleData(data)
                 }
             }
         )
@@ -712,11 +735,20 @@
         }
         {#  修改步骤和期望#}
 
-
+        var steps = caseDetail.steps;
+        var expects = caseDetail.expects;
+        row_steps_expects = $("#tSteps").children("tbody");
+        row_steps_expects.empty();
+        var step_expect = [];
+        for (var i = 0; i < steps.length; i++) {
+            step_expect[steps[i]] = expects[i];
+        }
+        rowTemplate = $.templates("#rowTemplate");
+        rowTemplate.render(step_expect);
+        row_steps_expects.append(rowTemplate);
     }
-
-
     $(document).ready(function () {
+        $.views.settings.delimiters("<%", "%>");
             $("#btPreEdit").click(function () {
                 editButtonClickEvent($(this));
             });

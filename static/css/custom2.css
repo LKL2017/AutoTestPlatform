@@ -1,0 +1,6 @@
+/*部分自定义样式*/
+
+.textarea {
+    resize: none;
+    overflow-y: hidden;
+}
