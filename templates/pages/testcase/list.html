@@ -27,6 +27,16 @@
             resize: none;
             overflow-y: hidden;
         }
+
+        .panel.noborder {
+            border: none;
+            box-shadow: none;
+        }
+
+        .panel.noborder > .panel-heading {
+            border: 1px solid #dddddd;
+            border-radius: 0;
+        }
     </style>
 </head>
 
@@ -400,7 +410,7 @@
                             <div class="tab-pane fade" id="profile">
                                 <div class="row" style="margin-top: 10px;">
                                     <div class="col-lg-12" id="divProductInfo">
-                                        <div class="panel panel-success">
+                                        <div class="panel panel-success noborder">
                                             <div class="panel-heading">
                                                 <button class="btn btn-default btn-xs disabled"
                                                         id="btCaseId">{{ first_case.id }}</button>
@@ -514,15 +524,17 @@
                             <div class="tab-pane fade in active" id="home">
                                 <div class="row" style="margin-top: 10px;">
                                     <div class="col-lg-12">
-                                        <div class="panel panel-success">
+                                        <div class="panel panel-success noborder">
                                             <div class="panel-heading">
-                                                <button class="btn btn-default btn-xs disabled">{{ first_case.id }}</button>
+                                                <button class="btn btn-default btn-xs disabled"
+                                                        id="detailId">{{ first_case.id }}</button>
                                                 <label class="header"
-                                                       style="margin-left: 10px;">{{ first_case.title }}</label>
+                                                       style="margin-left: 10px;"
+                                                       id="detailTitle">{{ first_case.title }}</label>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="row">
-                                                    <div class="panel-group" id="casePanel">
+                                                    <div class="panel-group" id="casePanel" style="border:none">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <div class="row">
@@ -553,7 +565,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="panel panel-default">
+                                                        <div class="panel panel-default ">
                                                             <div class="panel-heading">
                                                                 <div class="row">
                                                                     <div class="col-lg-4">
@@ -639,12 +651,13 @@
 <script src="{% static 'js/jsrender.min.js' %}"></script>
 
 <script id="rowTemplate" type="text/x-jsrender">
+
 <tr>
 <td>
-<textarea class="form-control textarea"     rows="1"    disabled="disabled"><% :td_step%></textarea>
+<textarea class="form-control textarea"     rows="1"    disabled="disabled"><%:step%></textarea>
 </td>
 <td>
-<textarea class="form-control textarea"     rows="1"    disabled="disabled"><% :td_expect %></textarea>
+<textarea class="form-control textarea"     rows="1"    disabled="disabled"><%:expect%></textarea>
 </td>
 </tr>
 
@@ -714,7 +727,9 @@
         $("#lastEditer").html(caseInfo.last_edit_user);
         $("#lastEditTime").html(caseInfo.last_edit_time);
         $("#btCaseId").html(caseInfo.id);
+        $("#detailId").html(caseInfo.id);
         $("#lbTitle").html(caseInfo.title);
+        $("#detailTitle").html(caseInfo.title);
         if (caseInfo.caseInfo === true) {
             $("#btCanEdit").css("display", "block");
             $("#btCantEdit").css("display", "none");
@@ -739,14 +754,20 @@
         var expects = caseDetail.expects;
         row_steps_expects = $("#tSteps").children("tbody");
         row_steps_expects.empty();
-        var step_expect = [];
+        var step_expects = [];
         for (var i = 0; i < steps.length; i++) {
-            step_expect[steps[i]] = expects[i];
+            var step_expect = [];
+            step_expect["step"] = steps[i];
+            step_expect["expect"] = expects[i];
+            step_expects.push(step_expect);
         }
+        {#进行模板的渲染#}
         rowTemplate = $.templates("#rowTemplate");
-        rowTemplate.render(step_expect);
-        row_steps_expects.append(rowTemplate);
+        {#rowTemplate.render({"step": "step1", "expect": "expect2"});#}
+        row = rowTemplate(step_expects);
+        row_steps_expects.html(row);
     }
+
     $(document).ready(function () {
         $.views.settings.delimiters("<%", "%>");
             $("#btPreEdit").click(function () {
@@ -762,8 +783,6 @@
                 $(this).addClass("active");
                 {#                进行异步请求#}
                 submitData($(this).attr("name"));
-
-
             });
         }
     )
