@@ -4,10 +4,21 @@ from product import views as pViews
 from testcase.models import TestCase, CaseModule
 from user.userUtils import user_dict
 from testcase.dataModels import TestCaseData, TestCaseDetail
+from django.http import JsonResponse
+import json
 
 
 # Create your views here.
 
+
+def module_dict():
+    """
+    :return: 模组的ID：模组的对应表
+    """
+    modules = CaseModule.objects.all()
+    return dict([
+        (mod.id, mod) for mod in modules
+    ])
 
 
 def init_upload_page(request):
@@ -43,12 +54,12 @@ def init_case_list(request):
         # 根据用例列表来进行分组，生成DICT
         module_case_dict = {}
         for _id in module_dict.keys():
-            case_list = [case.title for case in case_queryset if case.case_module == _id]
+            case_list = [case for case in case_queryset if case.case_module == _id]
             if first_case == "" and len(case_list) != 0:
                 first_case = case_list[0]
             module_case_dict[module_dict.get(_id).name] = case_list
         # 获取一个待显示的Case信息
-        first_case = case_queryset.filter(title=first_case)[0]
+        first_case = case_queryset.filter(id=first_case.id)[0]
         # 传输数据说明：
         # module_case_list：NAME:LIST
         # user_dict：用户ID:NAME 字典
@@ -60,3 +71,26 @@ def init_case_list(request):
                       {"module_case_dict": module_case_dict, "first_case": first_case,
                        "first_case_detail": first_case_detail
                        })
+
+
+def case_data(request, caseId=None):
+    """用于异步请求测试用例的数据"""
+    """请求需要测试用例的ID"""
+
+    if request.method == "GET":
+        case_id = request.GET.get("id")
+        case = TestCase.objects.filter(id=case_id)
+        if len(case) == 0:
+            return
+        case = case[0]
+        caseData = TestCaseData(case, user_dict(), module_dict())
+        caseData_dict = caseData.__dict__
+        caseData_dict.pop("_state")
+        data = {"caseData": caseData_dict}
+        caseDetail = TestCaseDetail(case)
+        data["caseDetail"] = caseDetail.__dict__
+        return JsonResponse(data)
+    if request.method == "POST":
+        pass
+
+    pass

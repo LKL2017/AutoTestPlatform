@@ -20,10 +20,16 @@
     <!-- Custom Fonts -->
     <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 
-    <link href="{% static 'js/prettyCode/prettify.css' %}" rel="stylesheet" type="text/css">
+    {#    <link href="{% static 'js/prettyCode/prettify.css' %}" rel="stylesheet" type="text/css">#}
+    <style type="text/css">
+        .textarea {
+            resize: none;
+            overflow-y: hidden;
+        }
+    </style>
 </head>
 
-<body onload="prettyPrint()">
+<body>
 
 <div id="wrapper">
 
@@ -347,7 +353,8 @@
                                             <div class="list-group">
                                                 {#  生成测试用例列表#}
                                                 {% for case in case_list %}
-                                                    <a class="list-group-item" href="#">{{ case }}</a>
+                                                    <a class="list-group-item" href="#"
+                                                       name="{{ case.id }}">{{ case.title }}</a>
                                                 {% empty %}
                                                     <p>该模块下无测试用例</p>
                                                 {% endfor %}
@@ -394,8 +401,9 @@
                                     <div class="col-lg-12" id="divProductInfo">
                                         <div class="panel panel-success">
                                             <div class="panel-heading">
-                                                <button class="btn btn-default btn-xs disabled">{{ first_case.id }}</button>
-                                                <label class="header"
+                                                <button class="btn btn-default btn-xs disabled"
+                                                        id="btCaseId">{{ first_case.id }}</button>
+                                                <label class="header" id="lbTitle"
                                                        style="margin-left: 10px;">{{ first_case.title }}</label>
                                             </div>
                                             <div class="panel-body">
@@ -403,10 +411,12 @@
                                                     <div class="row">
                                                         <div class="col-lg-1 text-left">
                                                             {% if first_case.editable %}
-                                                                <button class="btn btn-success btn-xs disabled">可编辑
+                                                                <button class="btn btn-success btn-xs disabled"
+                                                                        id="btCanEdit">可编辑
                                                                 </button>
                                                             {% else %}
-                                                                <button class="btn btn-danger btn-xs disabled">已锁定
+                                                                <button class="btn btn-danger btn-xs disabled"
+                                                                        id="btCantEdit">已锁定
                                                                 </button>
                                                             {% endif %}
                                                         </div>
@@ -422,20 +432,22 @@
                                                             <tr>
                                                                 <td class="col-lg-3">
 																						<span class="fa fa-user"
-                                                                                              style="margin-left: 30px;">&nbsp;&nbsp;由谁创建
+                                                                                              style="margin-left: 30px;"
+                                                                                        >&nbsp;&nbsp;由谁创建
 																						</span>
                                                                 </td>
-                                                                <td class="col-lg-5">
+                                                                <td class="col-lg-5" id="createUser">
                                                                     {{ first_case.create_user }}
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
 																						<span class="fa fa-calendar-times-o"
-                                                                                              style="margin-left: 30px;">&nbsp;&nbsp;创建时间
+                                                                                              style="margin-left: 30px;"
+                                                                                        >&nbsp;&nbsp;创建时间
 																						</span>
                                                                 </td>
-                                                                <td>
+                                                                <td id="createTime">
                                                                     {{ first_case.create_time }}
                                                                 </td>
                                                             </tr>
@@ -445,7 +457,7 @@
                                                                                               style="margin-left: 30px;">&nbsp;&nbsp;最后编辑者
 																						</span>
                                                                 </td>
-                                                                <td>{{ first_case.last_edit_user }}</td>
+                                                                <td id="lastEditer">{{ first_case.last_edit_user }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
@@ -453,7 +465,7 @@
                                                                                               style="margin-left: 30px;">&nbsp;&nbsp;编辑时间
 																						</span>
                                                                 </td>
-                                                                <td>{{ first_case.last_edit_time }}</td>
+                                                                <td id="lastEditTime">{{ first_case.last_edit_time }}</td>
                                                             </tr>
                                                         </table>
                                                     </div>
@@ -512,38 +524,59 @@
                                                     <div class="panel-group" id="casePanel">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
-                                                                <h4 class="panel-title">
-                                                                    <a data-toggle="collapse" data-parent="#casePanel"
-                                                                       href="#preCondition">前置条件</a>
-                                                                </h4>
+                                                                <div class="row">
+                                                                    <div class="col-lg-4">
+                                                                        <a class="panel-title btn btn-default btn-outline"
+                                                                           style="border: none;" data-toggle="collapse"
+                                                                           data-parent="#casePanel"
+                                                                           href="#preCondition">前置条件</a>
+                                                                    </div>
+                                                                    <div class="col-lg-8 text-right">
+                                                                        <button class="btn btn-danger text-right btn-outline"
+                                                                                id="btPreEdit" value="编辑">编辑
+                                                                        </button>
+                                                                    </div>
+
+
+                                                                </div>
                                                             </div>
                                                             <div id="preCondition" class="panel-collapse collapse in">
                                                                 <div class="panel-body">
                                                                     {% for pre in first_case_detail.pres %}
-                                                                        <div class="input-group list-group">
-                                                                            <input type="text" class="form-control"
-                                                                                   value="{{ pre }}!" disabled/>
-                                                                            <span class="input-group-addon btn btn-danger">编辑</span>
-                                                                        </div>
+                                                                        <textarea
+                                                                                class="form-control  textarea "
+                                                                                style="margin-top: 10px"
+                                                                                rows="1"
+                                                                                disabled="disabled">{{ pre }}</textarea>
                                                                     {% endfor %}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
-                                                                <h4 class="panel-title">
-                                                                    <a data-toggle="collapse" data-parent="#casePanel"
-                                                                       href="#steps">测试步骤</a>
-                                                                </h4>
+                                                                <div class="row">
+                                                                    <div class="col-lg-4">
+                                                                        <a class="panel-title btn btn-default btn-outline"
+                                                                           style="border: none;" data-toggle="collapse"
+                                                                           data-parent="#casePanel"
+                                                                           href="#steps">测试步骤</a>
+                                                                    </div>
+                                                                    <div class="col-lg-8 text-right">
+                                                                        <button class="btn btn-danger text-right btn-outline"
+                                                                                id="btStepEdit" value="编辑"
+                                                                        > 编辑
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div id="steps" class="panel-collapse collapse">
                                                                 <div class="panel-body">
                                                                     <table class="table">
                                                                         <thead>
                                                                         <tr>
-                                                                            <th>测试步骤
+                                                                            <th class="col-lg-6">测试步骤
                                                                             </th>
-                                                                            <th>期望结果
+                                                                            <th class="col-lg-6">期望结果
                                                                             </th>
                                                                         </tr>
                                                                         </thead>
@@ -551,23 +584,16 @@
                                                                         {% for i in first_case_detail.steps|times %}
                                                                             <tr>
                                                                                 <td>
-                                                                                    <div class="input-group">
-                                                                                        <input type="text"
-                                                                                               class="form-control"
-                                                                                               value="{{ first_case_detail.steps|item:i }}是否离开就是浪费空间斯洛伐克就是了福建师范老师付款计划是否可及时反馈说句话"
-
-
-                                                                                               disabled/>
-                                                                                        <span class="input-group-addon btn btn-danger">编辑</span>
-                                                                                    </div>
+                                                                                    <textarea
+                                                                                            class="form-control textarea"
+                                                                                            rows="1"
+                                                                                            disabled="disabled">{{ first_case_detail.steps|item:i }}</textarea>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <div class="input-group">
-                                                                                        <input type="text"
-                                                                                               class="form-control"
-                                                                                               value="期望结果1!" disabled/>
-                                                                                        <span class="input-group-addon btn btn-danger">编辑</span>
-                                                                                    </div>
+                                                                                    <textarea
+                                                                                            class="form-control textarea"
+                                                                                            rows="1"
+                                                                                            disabled="disabled">{{ first_case_detail.steps|item:i }}</textarea>
                                                                                 </td>
                                                                             </tr>
                                                                         {% endfor %}
@@ -606,37 +632,111 @@
 <!-- Custom Theme JavaScript -->
 <script src="{% static 'js/custom.min.js' %}"></script>
 
-<script src="{% static 'js/prettyCode/run_prettify.js' %}"></script>
+{#<script src="{% static 'js/prettyCode/run_prettify.js' %}"></script>#}
 
 <script type="text/javascript">
-    function editButtonChange(element) {
+
+    function editButtonClickEvent(element) {
         {#			    为span按钮添加点击事件，具体的功能为当其为点击编辑时，切换input的可输入状态为可输入#}
         {#                当其为OK时，切换input的状态为不可输入，同时发送请求，修改测试用例#}
-        status = element.html();
+        var status = element.html().trim();
+        var btID = element.attr("id").trim();
+        console.log(status, btID);
         if (status === "编辑") {
-            element.prev().removeAttr("disabled");
+            console.log("执行到这里");
+            if (btID === "btPreEdit") {
+                $("div#preCondition textarea").removeAttr("disabled");
+            }
+            else if (btID === "btStepEdit") {
+                $("div#steps textarea").removeAttr("disabled");
+            }
+
             element.html("OK");
             element.removeClass("btn-danger");
             element.addClass("btn-success");
         } else if (status === "OK") {
-            element.prev().attr("disabled", "disabled");
+            if (btID === "btPreEdit") {
+                $("div#preCondition textarea").attr("disabled", "disabled");
+            }
+            else if (btID === "btStepEdit") {
+                $("div#steps textarea").attr("disabled", "disabled");
+            }
             element.html("编辑");
             element.removeClass("btn-success");
             element.addClass("btn-danger");
         }
     }
 
+    function submitData(id) {
+        $.ajax({
+                url: "{% url 'testcase:detail' %}",
+                type: "get",
+                data: {'id': id, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                dataType: "json",
+                success: function (data) {
+
+                }
+            }
+        )
+    }
+
+    function handleData(data) {
+        {#        用于处理返回的测试用例数据#}
+        {#        修改测试用例的相关信息页面#}
+        var caseInfo = data.caseData;
+        var caseDetail = data.caseDetail;
+        {#                修改测试用例的创建信息#}
+        $("#createUser").html(caseInfo.create_user);
+        $("#createTime").html(caseInfo.create_time);
+        $("#lastEditer").html(caseInfo.last_edit_user);
+        $("#lastEditTime").html(caseInfo.last_edit_time);
+        $("#btCaseId").html(caseInfo.id);
+        $("#lbTitle").html(caseInfo.title);
+        if (caseInfo.caseInfo === true) {
+            $("#btCanEdit").css("display", "block");
+            $("#btCantEdit").css("display", "none");
+        }
+        else {
+            $("#btCanEdit").css("display", "none");
+            $("#btCantEdit").css("display", "block");
+        }
+
+        {# 修改测试用例的详细信息#}
+        {# 修改前置条件#}
+        var pres = caseDetail.pres;
+        div_precondition = $("#preCondition").children(":first");
+        div_precondition.empty();
+        for (var i = 0; i < pres.length; i++) {
+            var $text = $('<textarea class="form-control  textarea" style="margin-top: 10px" rows="1" disabled="disabled">' + pres[i] + '</textarea>');
+            div_precondition.append($text);
+        }
+        {#  修改步骤和期望#}
+
+
+    }
+
+
     $(document).ready(function () {
-        $(".input-group-addon").click(function () {
-            editButtonChange($(this));
-        });
-        $("a.list-group-item:first").addClass("active");
-        {#为左侧的导航列表添加点击事件#}
-        $("a.list-group-item").click(function () {
-            $("a.list-group-item").removeClass("active");
-            $(this).addClass("active")
-        });
-    });
+            $("#btPreEdit").click(function () {
+                editButtonClickEvent($(this));
+            });
+            $("#btStepEdit").click(function () {
+                editButtonClickEvent($(this));
+            });
+            $("a.list-group-item:first").addClass("active");
+            {#为左侧的导航列表添加点击事件#}
+            $("a.list-group-item").click(function () {
+                $("a.list-group-item").removeClass("active");
+                $(this).addClass("active");
+                {#                进行异步请求#}
+                submitData($(this).attr("name"));
+
+
+            });
+        }
+    )
+
+
 </script>
 
 </body>
