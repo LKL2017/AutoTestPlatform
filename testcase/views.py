@@ -11,6 +11,9 @@ import json
 # Create your views here.
 
 
+current_case_id = "current_case_id"
+
+
 def module_dict():
     """
     :return: 模组的ID：模组的对应表
@@ -65,7 +68,7 @@ def init_case_list(request):
         # user_dict：用户ID:NAME 字典
         # first_case：第一个需要显示的case
         # 将当前操作的测试用例ID写入到session
-        request.session["current_case"] = first_case.id
+        request.session[current_case_id] = first_case.id
         first_case_detail = TestCaseDetail(first_case)
         first_case = TestCaseData(first_case, users_dict, module_dict)
 
@@ -91,14 +94,14 @@ def case_data(request):
         caseDetail = TestCaseDetail(case)
         data["caseDetail"] = caseDetail.__dict__
         # 将当前操作的测试用例ID写入到session
-        request.session["current_case_id"] = case.id
+        request.session[current_case_id] = case.id
         # 返回数据
         return JsonResponse(data)
     if request.method == "POST":
         """此处进行测试用例的删除"""
         caseData = request.POST.get("caseData")
         updateType = int(request.POST.get("type"))
-        _case = TestCase.objects.filter(id=request.session["current_case_id"])[0]
+        _case = TestCase.objects.filter(id=request.session[current_case_id])[0]
         caseData = json.loads(caseData)
         print(caseData)
         if updateType == 1:
@@ -128,3 +131,26 @@ def case_data(request):
         else:
             result = SqlResultData(ResultEnum.Success)
             return JsonResponse(result_to_json(result))
+
+
+def init_case_detail(request):
+    """初始化测试用例详情页面"""
+    if request.method == "GET":
+        """
+        当请求方式为GET时，初始化测试用例页面的显示，该页面为/pages/testcase/modCase.html
+        """
+        users_dict = user_dict()
+        # 请求用例列表
+        first_case = TestCase.objects.filter(id=request.session[current_case_id])[0]
+        # 传输数据说明：
+        # module_case_list：NAME:LIST
+        # user_dict：用户ID:NAME 字典
+        # first_case：第一个需要显示的case
+        # 将当前操作的测试用例ID写入到session
+        request.session["current_case"] = first_case.id
+        first_case_detail = TestCaseDetail(first_case)
+        first_case = TestCaseData(first_case, users_dict, module_dict())
+        return render(request, "pages/testcase/modCase.html",
+                      {"first_case": first_case,
+                       "first_case_detail": first_case_detail
+                       })
