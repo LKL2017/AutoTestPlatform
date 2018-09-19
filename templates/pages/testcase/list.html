@@ -591,12 +591,6 @@
                                                                            data-parent="#casePanel"
                                                                            href="#steps">测试步骤</a>
                                                                     </div>
-                                                                    {#                                                                    <div class="col-lg-8 text-right">#}
-                                                                    {#                                                                        <button class="btn btn-danger text-right btn-outline"#}
-                                                                    {#                                                                                id="btStepEdit" value="编辑"#}
-                                                                    {#                                                                        > 编辑#}
-                                                                    {#                                                                        </button>#}
-                                                                    {#                                                                    </div>#}
                                                                 </div>
                                                             </div>
                                                             <div id="steps" class="panel-collapse collapse">
@@ -619,7 +613,7 @@
                                                                                     {{ first_case_detail.steps|item:i }}
                                                                                 </td>
                                                                                 <td>
-                                                                                    {{ first_case_detail.steps|item:i }}
+                                                                                    {{ first_case_detail.expects|item:i }}
                                                                                 </td>
                                                                             </tr>
                                                                         {% endfor %}

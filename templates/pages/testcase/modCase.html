@@ -581,7 +581,7 @@
                                                                                     <div class="input-group">
                                                                                         <textarea
                                                                                                 class="form-control textarea text-left"
-                                                                                                rows="1"> {{ first_case_detail.steps|item:i }}</textarea>
+                                                                                                rows="1"> {{ first_case_detail.expects|item:i }}</textarea>
                                                                                         <span class="input-group-addon btn btn-danger">删除</span>
                                                                                     </div>
                                                                             </tr>
@@ -674,17 +674,6 @@
                                                                                     </div>
                                                                             </tr>
 
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 <script id="preTemplate" type="text/x-jsrender">
@@ -699,16 +688,6 @@
 </tr>
 
 
-
-
-
-
-
-
-
-
-
-
 </script>
 
 
@@ -718,13 +697,32 @@
     function updateCase() {
         {#        为更新步骤和期望#}
         let caseDetail = caseData();
+        {#判断步骤和期望在数量上是否保持一致，否则需要重新修改#}
+        console.log(caseDetail);
+        if (caseDetail.steps.length !== caseDetail.expects.length) {
+            swal({
+                text: "请检查输入,步骤和期望请保持一致！",
+                timer: 3000,
+                showConfirmButton: false
+            });
+            return
+        }
         $.ajax({
             url: "{% url 'testcase:detail' %}",
             type: "post",
             data: {'caseData': JSON.stringify(caseDetail), csrfmiddlewaretoken: '{{ csrf_token }}'},
             dataType: "json",
             success: function (data) {
-                console.log(data);
+                if (data.result_code === "2") {
+                    swal({
+                        text: data.result_reason,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                }
+                else {
+                    {#window.location.href="{% url "testcase:list" %}"#}
+                }
             }
         })
     }
@@ -745,8 +743,14 @@
         for (let i = 0; i < row_steps_expects.length - 1; i++) {
             {#     取出单行中的步骤和期望#}
             {#            console.log($(row_steps_expects[i])[0].innerHTML);#}
-            steps.push($(row_steps_expects[i]).find("textarea:first").val().trim());
-            expects.push($(row_steps_expects[i]).find("textarea:last").val().trim());
+            let step_val = $(row_steps_expects[i]).find("textarea:first").val().trim();
+            if (step_val !== "") {
+                steps.push(step_val)
+            }
+            let expect_val = $(row_steps_expects[i]).find("textarea:last").val().trim();
+            if (expect_val !== "") {
+                steps.push(expect_val)
+            }
         }
 
         let caseDetail = {};
@@ -756,6 +760,7 @@
         caseDetail["expects"] = expects;
         return caseDetail
     }
+
 
 
     function is_case_exists(title) {
@@ -784,10 +789,7 @@
             else {
                 return true
             }
-
-
         }
-
     }
 
     $(document).ready(function () {

@@ -1,12 +1,15 @@
-from django.shortcuts import render, redirect
-from product.models import Product
-from product import views as pViews
-from testcase.models import TestCase, CaseModule
-from user.userUtils import user_dict
-from testcase.dataModels import TestCaseData, TestCaseDetail
-from django.http import JsonResponse
-from AutoTestPlatform.CommonModels import ResultEnum, SqlResultData, result_to_json
 import json
+
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+
+from AutoTestPlatform.CommonModels import ResultEnum, SqlResultData, result_to_json
+from product import views as pViews
+from product.models import Product
+from testcase.dataModels import TestCaseData, TestCaseDetail
+from testcase.models import TestCase, CaseModule
+from user.models import User
+from user.userUtils import user_dict
 from utils.consts import *
 
 # Create your views here.
@@ -28,7 +31,7 @@ def module_dict():
 def init_upload_page(request):
     if request.method == "GET":
         # 从session中获取当前登录的用户
-        name = request.session.get("user")
+        name = request.session.get(SESSION_USER_NAME)
         # 获取所有的产品列表，然后传回并且生成select列表
         product_query_set = Product.objects.all()
         products = [product.name for product in product_query_set]
@@ -116,7 +119,8 @@ def case_data(request):
         _case.steps = step_string
         _case.expect = expects_string
         # 修改updateUser和updateTime
-        _case.last_edit_user = request.session[SESSION_USER_ID]
+        user_name = request.session[SESSION_USER_NAME]
+        _case.last_edit_user = User.objects.filter(name=user_name)[0].id
     try:
         print(_case.__dict__)
         _case.save()
