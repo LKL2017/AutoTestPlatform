@@ -7,6 +7,7 @@ from testcase.dataModels import TestCaseData, TestCaseDetail
 from django.http import JsonResponse
 from AutoTestPlatform.CommonModels import ResultEnum, SqlResultData, result_to_json
 import json
+from utils.consts import *
 
 # Create your views here.
 
@@ -100,37 +101,32 @@ def case_data(request):
     if request.method == "POST":
         """此处进行测试用例的删除"""
         caseData = request.POST.get("caseData")
-        updateType = int(request.POST.get("type"))
         _case = TestCase.objects.filter(id=request.session[current_case_id])[0]
         caseData = json.loads(caseData)
-        print(caseData)
-        if updateType == 1:
-            # 更新title
-            _case.title = caseData["title"]
-        if updateType == 2:
-            # 更新前置条件
-            pres = caseData["pres"]
-            pres_string = " "
-            pres_string = pres_string.join(pres)
-            print(pres_string)
-            _case.precondition = pres_string
-        if updateType == 3:
-            # 修改步骤和期望
-            steps = caseData["steps"]
-            expects = caseData.expects
-            step_string = " ".join(steps)
-            expects_string = " ".join(expects)
-            _case.steps = step_string
-            _case.expect = expects_string
-        try:
-            print(_case.__dict__)
-            _case.save()
-        except ValueError as error:
-            result = SqlResultData(ResultEnum.Error, error)
-            return JsonResponse(result_to_json(result))
-        else:
-            result = SqlResultData(ResultEnum.Success)
-            return JsonResponse(result_to_json(result))
+        _case.title = caseData["title"]  # 更新前置条件
+        pres = caseData["pres"]
+        pres_string = " "
+        pres_string = pres_string.join(pres)
+        _case.precondition = pres_string
+        # 修改步骤和期望
+        steps = caseData["steps"]
+        expects = caseData["expects"]
+        step_string = " ".join(steps)
+        expects_string = " ".join(expects)
+        _case.steps = step_string
+        _case.expect = expects_string
+        # 修改updateUser和updateTime
+        _case.last_edit_user = request.session[SESSION_USER_ID]
+    try:
+        print(_case.__dict__)
+        _case.save()
+    except ValueError as error:
+        print(error.__str__())
+        result = SqlResultData(ResultEnum.Error, "修改失败，请回报任宗毅！")
+        return JsonResponse(result_to_json(result))
+    else:
+        result = SqlResultData(ResultEnum.Success)
+        return JsonResponse(result_to_json(result))
 
 
 def init_case_detail(request):
@@ -149,7 +145,6 @@ def init_case_detail(request):
         # 将当前操作的测试用例ID写入到session
         request.session["current_case"] = first_case.id
         first_case_detail = TestCaseDetail(first_case)
-        print("detail=" + str(first_case_detail.pres))
         first_case = TestCaseData(first_case, users_dict, module_dict())
         return render(request, "pages/testcase/modCase.html",
                       {"first_case": first_case,
@@ -167,3 +162,13 @@ def del_case(request, case_id=None):
         case_id = request.session[current_case_id]
     # TestCase.objects.filter(id=case_id).delete()
     return redirect("/testcase/list/")
+
+
+def is_case_exists(request, title=None):
+    """判断某个测试用例是否存在"""
+    if request.method == "GET":
+        case_title = request.GET.get("title")
+        if len(TestCase.objects.filter(title=case_title)) != 0:
+            return JsonResponse({"result": "true"})
+        else:
+            return JsonResponse({"result": "false"})
