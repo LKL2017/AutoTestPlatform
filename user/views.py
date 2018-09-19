@@ -7,6 +7,7 @@ from django.shortcuts import render
 from user.form import LoginForm
 from user.models import User
 import utils.decorators as dec
+from utils.consts import *
 
 
 def login(request):
@@ -35,7 +36,7 @@ def login(request):
                 return render(request, "login.html", {"error_msg": "用户名或者密码错误，请重新输入！"})
             user = res_set[0]
             if str(user.password) == pwd:
-                request.session["user"] = user.name
+                request.session[SESSION_USER_ID] = user.name
                 if remember:
                     pass
                 # TODO 需要添加记住我功能
@@ -47,7 +48,7 @@ def login(request):
 
 @dec.dec_is_login
 def logout(request):
-    del request.session["user"]
+    del request.session[SESSION_USER_ID]
     return redirect(login)
 
 

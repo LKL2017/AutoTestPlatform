@@ -8,5 +8,6 @@ urlpatterns = [
     path('detail/', views.case_data, name="detail"),
     path('caseDetail/', views.init_case_detail, name="caseDetail"),
     path('delCase/', views.del_case, name="delCase"),
+    path('isCaseExists/', views.is_case_exists, name="isCaseExists"),
 
 ]

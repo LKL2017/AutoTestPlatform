@@ -25,9 +25,9 @@ class TestCase(models.Model):
     steps = models.TextField(null=False)
     expect = models.TextField(null=False)
     create_user = models.IntegerField(null=False)
-    create_time = models.DateTimeField(auto_now=True)
+    create_time = models.DateTimeField(auto_now_add=True)
     last_edit_user = models.IntegerField()
-    last_edit_time = models.DateTimeField()
+    last_edit_time = models.DateTimeField(auto_now=True)
     case_module = models.IntegerField()
     editable = models.BooleanField(default=True)
 

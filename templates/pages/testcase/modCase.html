@@ -682,6 +682,9 @@
 
 
 
+
+
+
 </script>
 
 <script id="preTemplate" type="text/x-jsrender">
@@ -704,87 +707,46 @@
 
 
 
+
+
 </script>
 
 
 <script type="text/javascript">
 
 
-    function data_to_submit() {
-        {#        该方法用于进行提交时的数据采集#}
+    function updateCase() {
+        {#        为更新步骤和期望#}
+        let caseDetail = caseData();
+        $.ajax({
+            url: "{% url 'testcase:detail' %}",
+            type: "post",
+            data: {'caseData': JSON.stringify(caseDetail), csrfmiddlewaretoken: '{{ csrf_token }}'},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            }
+        })
     }
-
-
-    {#    function editButtonClickEvent(element) {#}
-    {#			    为span按钮添加点击事件，具体的功能为当其为点击编辑时，切换input的可输入状态为可输入#}
-    {#                当其为OK时，切换input的状态为不可输入，同时发送请求，修改测试用例#}
-    {#        let status = element.html().trim();#}
-    {#        let btID = element.attr("id").trim();#}
-    {#        if (status === "编辑") {#}
-    {#            if (btID === "btPreEdit") {#}
-    {#                $("div#preCondition textarea").removeAttr("disabled");#}
-    {#            }#}
-    {#            else if (btID === "btStepEdit") {#}
-    {#                $("div#steps textarea").removeAttr("disabled");#}
-    {#            }#}
-    {##}
-    {#            element.html("OK");#}
-    {#            element.removeClass("btn-danger");#}
-    {#            element.addClass("btn-success");#}
-    {#        } else if (status === "OK") {#}
-    {#            if (btID === "btPreEdit") {#}
-    {#                $("div#preCondition textarea").attr("disabled", "disabled");#}
-    {#            }#}
-    {#            else if (btID === "btStepEdit") {#}
-    {#                $("div#steps textarea").attr("disabled", "disabled");#}
-    {#            }#}
-    {#            element.html("编辑");#}
-    {#            element.removeClass("btn-success");#}
-    {#            element.addClass("btn-danger");#}
-    {#        }#}
-    {#    }#}
-
-
-
-    {#    function updateCase(id) {#}
-    {#updateType:1为更新title,2为更新更新前置条件,3为更新步骤和期望#}
-    {#        let caseDetail = caseData();#}
-    {#        let updateType = 1;#}
-    {#        if (id === "btPreEdit") {#}
-    {#            updateType = 2;#}
-    {#        }#}
-    {#        else if (id === "btStepEdit") {#}
-    {#            updateType = 3;#}
-    {#        }#}
-    {#        $.ajax({#}
-    {#            url: "{% url 'testcase:detail' %}",#}
-    {#            type: "post",#}
-    {#            data: {'caseData': JSON.stringify(caseDetail), "type": updateType, csrfmiddlewaretoken: '{{ csrf_token }}'},#}
-    {#            dataType: "json",#}
-    {#            success: function (data) {#}
-    {#                console.log(data);#}
-    {#            }#}
-    {#        })#}
-    {#    }#}
 
 
     function caseData() {
         {#     用于修改测试用例,从所有textArea中获取测试用例的当前值，封装成为一个json对象，传输到View中进行处理#}
-        console.log("调用数据收集！");
-        let title = $("#lbTitle").html();
+        let title = $("#detailTitle").html();
         let all_pres = $("div#preCondition textarea");
         let pre_list = [];
         for (let i = 0; i < all_pres.length; i++) {
-            pre_list.push(all_pres[i].innerHTML.trim());
+            pre_list.push(all_pres[i].value.trim());
         }
         let row_steps_expects = $("table#tSteps tbody tr");
         let steps = [];
         let expects = [];
         {#     取出所有的步骤#}
-        for (let i = 0; i < row_steps_expects.length; i++) {
+        for (let i = 0; i < row_steps_expects.length - 1; i++) {
             {#     取出单行中的步骤和期望#}
-            steps.push($(row_steps_expects[i]).children("td:first").children("textarea").html().trim());
-            expects.push($(row_steps_expects[i]).children("td:last").children("textarea").html().trim());
+            {#            console.log($(row_steps_expects[i])[0].innerHTML);#}
+            steps.push($(row_steps_expects[i]).find("textarea:first").val().trim());
+            expects.push($(row_steps_expects[i]).find("textarea:last").val().trim());
         }
 
         let caseDetail = {};
@@ -792,13 +754,41 @@
         caseDetail["pres"] = pre_list;
         caseDetail["steps"] = steps;
         caseDetail["expects"] = expects;
-
-        console.log(caseDetail);
-
         return caseDetail
-
     }
 
+
+    function is_case_exists(title) {
+        {#判断测试用例是否存在#}
+        $.ajax({
+            url: "{% url "testcase:isCaseExists" %}",
+            type: "get",
+            data: {'title': title, csrfmiddlewaretoken: '{{ csrf_token }}'},
+            dataType: "json",
+            success: function (data) {
+                return data.result;
+            }
+        })
+    }
+
+    function is_title_valid(title) {
+        {#        判断输入的测试用例标题是否合法#}
+        if (title === "") {
+            return "标题不能为空，请重新输入！"
+        }
+        else {
+            let result = is_case_exists(title);
+            if (result === "true") {
+                return "该测试用例标题已存在，请重新输入！"
+            }
+            else {
+                return true
+            }
+
+
+        }
+
+    }
 
     $(document).ready(function () {
             $.views.settings.delimiters("<%", "%>");
@@ -830,21 +820,20 @@
                     dangerMode: true,
                 })
                     .then((willDelete) => {
-                        console.log(willDelete);
                         if (willDelete) {
                             window.location.href = "{% url "testcase:delCase" %}";
                         }
                     });
 
             });
-            $("#detailTitle").blur(function () {
+        $("#detailTitle").change(function () {
                 {# 为标题按钮添加失去焦点事件#}
-                if ($(this).html() === "") {
-                    swal("请输入用例的标题！.")
+            let result = is_title_valid($(this).html());
+            if (result !== true) {
+                swal(result)
                         .then(() => {
                             $("#detailTitle")[0].focus();
                         });
-
                 }
             });
             {#为重置按钮添加点击事件#}
@@ -853,8 +842,7 @@
             });
             {#为提交按钮添加点击事件#}
             $("#btnSubmit").click(function () {
-                console.log(caseData());
-
+                updateCase();
             });
 
         }
