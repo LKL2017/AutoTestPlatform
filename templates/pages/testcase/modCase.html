@@ -337,7 +337,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">测试用例</h1>
+                <h1 class="page-header">用例详情</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -347,7 +347,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <span class="fa fa-folder-open"></span>
-                        用例信息
+                        用例修改
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -357,7 +357,7 @@
                                 <a href="#home" data-toggle="tab">用例信息</a>
                             </li>
                             <li>
-                                <a href="#profile" data-toggle="tab">历史记录</a>
+                                <a href="#profile" data-toggle="tab">操作记录</a>
                             </li>
                             <li>
                                 <a href="#messages" data-toggle="tab">脚本信息</a>
@@ -477,11 +477,14 @@
                                                        style="margin-left: 10px;"
                                                        id="detailTitle"
                                                        contenteditable="true">{{ first_case.title }}</label>
+                                                <button class="btn btn-danger btn-outline" style="margin-left: 100px "
+                                                        id="btnDelCase">删除
+                                                </button>
                                             </div>
 
 
                                             <div class="panel-body">
-                                                <div class="row">
+                                                <div class="row" style="margin-top: 10px;">
                                                     <div class="panel-group" id="casePanel" style="border:none">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
@@ -495,25 +498,50 @@
 
                                                                 </div>
                                                             </div>
-
-
                                                             <div id="preCondition" class="panel-collapse collapse in">
                                                                 <div class="panel-body">
 
-                                                                    <table class="table borderless"
-                                                                           style="margin-top: 5px;margin-left: 50px;margin-bottom: 5px"
+                                                                    <table class="table borderless text-left"
+                                                                           style="margin-top: 5px;margin-bottom: 5px; width: 50%;margin-left: 5%"
                                                                            id="tPre">
                                                                         <tbody>
                                                                         {% for pre in first_case_detail.pres %}
                                                                             <tr>
-                                                                                <td>{{ pre }}</td>
+                                                                                <td>
+                                                                                    <div class="input-group">
+                                                                                        <textarea
+                                                                                                class="form-control textarea text-left"
+                                                                                                rows="1"> {{ pre }}</textarea>
+                                                                                        <span class="input-group-addon btn btn-danger">删除</span>
+                                                                                    </div>
+
+                                                                                </td>
                                                                             </tr>
+                                                                        {% empty %}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <div class="input-group">
+                                                                                        <textarea
+                                                                                                class="form-control textarea text-left"
+                                                                                                rows="1"
+                                                                                                placeholder="请输入前置条件！"></textarea>
+                                                                                        <span class="input-group-addon btn btn-danger">删除</span>
+                                                                                    </div>
+
+                                                                                </td>
+                                                                            </tr>
+
                                                                         {% endfor %}
-
+                                                                        <tr>
+                                                                            <td>
+                                                                                <button class="btn btn-success"
+                                                                                        id="btNewPre">新增
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
                                                                         </tbody>
-
-
                                                                     </table>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -527,78 +555,143 @@
                                                                            href="#steps">测试步骤</a>
                                                                     </div>
                                                                 </div>
-                                                                <div id="steps" class="panel-collapse collapse">
-                                                                    <div class="panel-body">
-                                                                        <table class="table table-striped "
-                                                                               style="margin-top: 20px"
-                                                                               id="tSteps">
-                                                                            <thead>
+                                                            </div>
+                                                            <div id="steps" class="panel-collapse collapse">
+                                                                <div class="panel-body">
+                                                                    <table class="table borderless "
+                                                                           style="margin-top: 5px;margin-bottom: 5px; width: 90%;margin-left: 5%"
+                                                                           id="tSteps">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th class="col-lg-4">测试步骤
+                                                                            </th>
+                                                                            <th class="col-lg-5">期望结果
+                                                                            </th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {% for i in first_case_detail.steps|times %}
                                                                             <tr>
-                                                                                <th class="col-lg-6">测试步骤
-                                                                                </th>
-                                                                                <th class="col-lg-6">期望结果
-                                                                                </th>
+                                                                                <td>
+                                                                                    <textarea
+                                                                                            class="textarea form-control"
+                                                                                            rows="1">{{ first_case_detail.steps|item:i }}</textarea>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="input-group">
+                                                                                        <textarea
+                                                                                                class="form-control textarea text-left"
+                                                                                                rows="1"> {{ first_case_detail.steps|item:i }}</textarea>
+                                                                                        <span class="input-group-addon btn btn-danger">删除</span>
+                                                                                    </div>
                                                                             </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                            {% for i in first_case_detail.steps|times %}
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        {{ first_case_detail.steps|item:i }}
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {{ first_case_detail.steps|item:i }}
-                                                                                    </td>
-                                                                                </tr>
-                                                                            {% endfor %}
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
+                                                                        {% endfor %}
+                                                                        <tr>
+                                                                            <td>
+                                                                                <button class="btn btn-success"
+                                                                                        id="btNewStep">新增
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div>
+                                                <table class="table borderless" style="width: 20%">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <button class="btn btn-success" id="btnSubmit">提交</button>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-info" id="btnReset">重置</button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
                                         </div>
                                     </div>
+
                                 </div>
+
                             </div>
-                            <!-- /.panel-body -->
                         </div>
-                        <!-- /.panel -->
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.col-lg-6 -->
+                    <!-- /.panel -->
                 </div>
+                <!-- /.col-lg-6 -->
             </div>
         </div>
     </div>
-    <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="{% static 'js/jquery.js' %}"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</div>
+<!-- /#wrapper -->
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="{% static 'js/metisMenu.min.js' %}"></script>
+<!-- jQuery -->
+<script src="{% static 'js/jquery.js' %}"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="{% static 'js/custom.min.js' %}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
-    {#<script src="{% static 'js/prettyCode/run_prettify.js' %}"></script>#}
+<!-- Metis Menu Plugin JavaScript -->
+<script src="{% static 'js/metisMenu.min.js' %}"></script>
 
-    <script src="{% static 'js/jsrender.min.js' %}"></script>
+<!-- Custom Theme JavaScript -->
+<script src="{% static 'js/custom.min.js' %}"></script>
 
-    <script id="rowTemplate" type="text/x-jsrender">
+{#<script src="{% static 'js/prettyCode/run_prettify.js' %}"></script>#}
+
+<script src="{% static 'js/jsrender.min.js' %}"></script>
+
+
+<!-- bootbox javascript-->
+
+<script src="{% static 'js/sweetalert.min.js' %}"></script>
+
+
+<script id="stepTemplate" type="text/x-jsrender">
+<tr>
+                                                                                <td>
+                                                                                    <textarea
+                                                                                            class="textarea form-control"
+                                                                                            rows="1" placeholder="请输入步骤!"></textarea>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="input-group">
+                                                                                        <textarea
+                                                                                                class="form-control textarea text-left"
+                                                                                                rows="1" placeholder="请输入期望结果!"></textarea>
+                                                                                        <span class="input-group-addon btn btn-danger">删除</span>
+                                                                                    </div>
+                                                                            </tr>
+
+
+
+
+
+
+
+
+
+</script>
+
+<script id="preTemplate" type="text/x-jsrender">
 
 <tr>
 <td>
-<%:step%>
-</td>
-<td>
-<%:expect%>
+<div class="input-group">
+<textarea  class="form-control textarea text-left" rows="1" placeholder="请输入前置条件!"></textarea>
+<span class="input-group-addon btn btn-danger">删除</span>
+</div>
 </td>
 </tr>
 
@@ -611,207 +704,162 @@
 
 
 
+</script>
 
 
-    </script>
-
-    <script id="preTemplate" type="text/x-jsrender">
-
-<tr>
-<td>
-<%:pre%>
-</td>
-</tr>
+<script type="text/javascript">
 
 
+    function data_to_submit() {
+        {#        该方法用于进行提交时的数据采集#}
+    }
+
+
+    {#    function editButtonClickEvent(element) {#}
+    {#			    为span按钮添加点击事件，具体的功能为当其为点击编辑时，切换input的可输入状态为可输入#}
+    {#                当其为OK时，切换input的状态为不可输入，同时发送请求，修改测试用例#}
+    {#        let status = element.html().trim();#}
+    {#        let btID = element.attr("id").trim();#}
+    {#        if (status === "编辑") {#}
+    {#            if (btID === "btPreEdit") {#}
+    {#                $("div#preCondition textarea").removeAttr("disabled");#}
+    {#            }#}
+    {#            else if (btID === "btStepEdit") {#}
+    {#                $("div#steps textarea").removeAttr("disabled");#}
+    {#            }#}
+    {##}
+    {#            element.html("OK");#}
+    {#            element.removeClass("btn-danger");#}
+    {#            element.addClass("btn-success");#}
+    {#        } else if (status === "OK") {#}
+    {#            if (btID === "btPreEdit") {#}
+    {#                $("div#preCondition textarea").attr("disabled", "disabled");#}
+    {#            }#}
+    {#            else if (btID === "btStepEdit") {#}
+    {#                $("div#steps textarea").attr("disabled", "disabled");#}
+    {#            }#}
+    {#            element.html("编辑");#}
+    {#            element.removeClass("btn-success");#}
+    {#            element.addClass("btn-danger");#}
+    {#        }#}
+    {#    }#}
 
 
 
+    {#    function updateCase(id) {#}
+    {#updateType:1为更新title,2为更新更新前置条件,3为更新步骤和期望#}
+    {#        let caseDetail = caseData();#}
+    {#        let updateType = 1;#}
+    {#        if (id === "btPreEdit") {#}
+    {#            updateType = 2;#}
+    {#        }#}
+    {#        else if (id === "btStepEdit") {#}
+    {#            updateType = 3;#}
+    {#        }#}
+    {#        $.ajax({#}
+    {#            url: "{% url 'testcase:detail' %}",#}
+    {#            type: "post",#}
+    {#            data: {'caseData': JSON.stringify(caseDetail), "type": updateType, csrfmiddlewaretoken: '{{ csrf_token }}'},#}
+    {#            dataType: "json",#}
+    {#            success: function (data) {#}
+    {#                console.log(data);#}
+    {#            }#}
+    {#        })#}
+    {#    }#}
 
 
+    function caseData() {
+        {#     用于修改测试用例,从所有textArea中获取测试用例的当前值，封装成为一个json对象，传输到View中进行处理#}
+        console.log("调用数据收集！");
+        let title = $("#lbTitle").html();
+        let all_pres = $("div#preCondition textarea");
+        let pre_list = [];
+        for (let i = 0; i < all_pres.length; i++) {
+            pre_list.push(all_pres[i].innerHTML.trim());
+        }
+        let row_steps_expects = $("table#tSteps tbody tr");
+        let steps = [];
+        let expects = [];
+        {#     取出所有的步骤#}
+        for (let i = 0; i < row_steps_expects.length; i++) {
+            {#     取出单行中的步骤和期望#}
+            steps.push($(row_steps_expects[i]).children("td:first").children("textarea").html().trim());
+            expects.push($(row_steps_expects[i]).children("td:last").children("textarea").html().trim());
+        }
 
-    </script>
+        let caseDetail = {};
+        caseDetail["title"] = title;
+        caseDetail["pres"] = pre_list;
+        caseDetail["steps"] = steps;
+        caseDetail["expects"] = expects;
+
+        console.log(caseDetail);
+
+        return caseDetail
+
+    }
 
 
-    <script type="text/javascript">
+    $(document).ready(function () {
+            $.views.settings.delimiters("<%", "%>");
 
+            $("#btNewPre").click(function () {
+                {# 新增前置条件行#}
+                let pre_template = $.templates("#preTemplate");
+                $(this).parent().parent().before(pre_template)
+            });
 
-        {#    function editButtonClickEvent(element) {#}
-        {#			    为span按钮添加点击事件，具体的功能为当其为点击编辑时，切换input的可输入状态为可输入#}
-        {#                当其为OK时，切换input的状态为不可输入，同时发送请求，修改测试用例#}
-        {#        let status = element.html().trim();#}
-        {#        let btID = element.attr("id").trim();#}
-        {#        if (status === "编辑") {#}
-        {#            if (btID === "btPreEdit") {#}
-        {#                $("div#preCondition textarea").removeAttr("disabled");#}
-        {#            }#}
-        {#            else if (btID === "btStepEdit") {#}
-        {#                $("div#steps textarea").removeAttr("disabled");#}
-        {#            }#}
-        {##}
-        {#            element.html("OK");#}
-        {#            element.removeClass("btn-danger");#}
-        {#            element.addClass("btn-success");#}
-        {#        } else if (status === "OK") {#}
-        {#            if (btID === "btPreEdit") {#}
-        {#                $("div#preCondition textarea").attr("disabled", "disabled");#}
-        {#            }#}
-        {#            else if (btID === "btStepEdit") {#}
-        {#                $("div#steps textarea").attr("disabled", "disabled");#}
-        {#            }#}
-        {#            element.html("编辑");#}
-        {#            element.removeClass("btn-success");#}
-        {#            element.addClass("btn-danger");#}
-        {#        }#}
-        {#    }#}
+            {#            为新增步骤按钮添加回调函数#}
+            $("#btNewStep").click(function () {
+                let step_template = $.templates("#stepTemplate");
+                $(this).parent().parent().before(step_template())
+            });
 
-        function submitData(id) {
-            $.ajax({
-                    url: "{% url 'testcase:detail' %}",
-                    type: "get",
-                    data: {'id': id, csrfmiddlewaretoken: '{{ csrf_token }}'},
-                    dataType: "json",
-                    success: function (data) {
-                        handleData(data)
-                    }
+            {#            为删除按钮添加回调函数#}
+            $("table").on("click", ".btn-danger", function () {
+                let row = $(this).parent().parent().parent();
+                row.remove();
+            });
+
+            $("#btnDelCase").click(function () {
+                {#                删除测试用例#}
+                swal({
+                    title: "确认?",
+                    text: "一旦删除，该测试用例将从完全被删除!",
+                    buttons: ["取消", "确认"],
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        console.log(willDelete);
+                        if (willDelete) {
+                            window.location.href = "{% url "testcase:delCase" %}";
+                        }
+                    });
+
+            });
+            $("#detailTitle").blur(function () {
+                {# 为标题按钮添加失去焦点事件#}
+                if ($(this).html() === "") {
+                    swal("请输入用例的标题！.")
+                        .then(() => {
+                            $("#detailTitle")[0].focus();
+                        });
+
                 }
-            )
+            });
+            {#为重置按钮添加点击事件#}
+            $("#btnReset").click(function () {
+                location.reload();
+            });
+            {#为提交按钮添加点击事件#}
+            $("#btnSubmit").click(function () {
+                console.log(caseData());
+
+            });
+
         }
-
-        function handleData(data) {
-            {#        用于处理返回的测试用例数据#}
-            {#        修改测试用例的相关信息页面#}
-            let caseInfo = data.caseData;
-            let caseDetail = data.caseDetail;
-            {#                修改测试用例的创建信息#}
-            $("#createUser").html(caseInfo.create_user);
-            $("#createTime").html(caseInfo.create_time);
-            $("#lastEditer").html(caseInfo.last_edit_user);
-            $("#lastEditTime").html(caseInfo.last_edit_time);
-            $("#btCaseId").html(caseInfo.id);
-            $("#detailId").html(caseInfo.id);
-            $("#lbTitle").html(caseInfo.title);
-            $("#detailTitle").html(caseInfo.title);
-            if (caseInfo.editable === true) {
-                $("#btCanEdit").css("display", "block");
-                $("#btCantEdit").css("display", "none");
-            }
-            else {
-                $("#btCanEdit").css("display", "none");
-                $("#btCantEdit").css("display", "block");
-            }
-
-            {# 修改测试用例的详细信息#}
-            {# 修改前置条件#}
-            let pres = caseDetail.pres;
-            let table_pre = $("#tPre").children("tbody");
-            table_pre.empty();
-            let pre_template = $.templates("#preTemplate");
-            let pres_list = [];
-            for (let i = 0; i < pres.length; i++) {
-                pres_list.push({"pre": pres[i]})
-            }
-            let pre_row = pre_template(pres_list);
-            table_pre.html(pre_row);
-
-            {#  修改步骤和期望#}
-
-            let steps = caseDetail.steps;
-            let expects = caseDetail.expects;
-            let row_steps_expects = $("#tSteps").children("tbody");
-            row_steps_expects.empty();
-            let step_expects = [];
-            for (let i = 0; i < steps.length; i++) {
-                let step_expect = [];
-                step_expect["step"] = steps[i];
-                step_expect["expect"] = expects[i];
-                step_expects.push(step_expect);
-            }
-            {#进行模板的渲染#}
-            let rowTemplate = $.templates("#rowTemplate");
-            let row = rowTemplate(step_expects);
-            row_steps_expects.html(row);
-        }
-
-        {#    function updateCase(id) {#}
-        {#updateType:1为更新title,2为更新更新前置条件,3为更新步骤和期望#}
-        {#        let caseDetail = caseData();#}
-        {#        let updateType = 1;#}
-        {#        if (id === "btPreEdit") {#}
-        {#            updateType = 2;#}
-        {#        }#}
-        {#        else if (id === "btStepEdit") {#}
-        {#            updateType = 3;#}
-        {#        }#}
-        {#        $.ajax({#}
-        {#            url: "{% url 'testcase:detail' %}",#}
-        {#            type: "post",#}
-        {#            data: {'caseData': JSON.stringify(caseDetail), "type": updateType, csrfmiddlewaretoken: '{{ csrf_token }}'},#}
-        {#            dataType: "json",#}
-        {#            success: function (data) {#}
-        {#                console.log(data);#}
-        {#            }#}
-        {#        })#}
-        {#    }#}
-
-
-        {#    function caseData() {#}
-        {# 用于修改测试用例,从所有textArea中获取测试用例的当前值，封装成为一个json对象，传输到View中进行处理#}
-        {#        console.log("调用数据收集！");#}
-        {#        let title = $("#lbTitle").html();#}
-        {#        let all_pres = $("div#preCondition textarea");#}
-        {#        let pre_list = [];#}
-        {#        for (let i = 0; i < all_pres.length; i++) {#}
-        {#            pre_list.push(all_pres[i].innerHTML.trim());#}
-        {#        }#}
-        {#        let row_steps_expects = $("table#tSteps tbody tr");#}
-        {#        let steps = [];#}
-        {#        let expects = [];#}
-        {# 取出所有的步骤#}
-        {#        for (let i = 0; i < row_steps_expects.length; i++) {#}
-        {# 取出单行中的步骤和期望#}
-        {#            steps.push($(row_steps_expects[i]).children("td:first").children("textarea").html().trim());#}
-        {#            expects.push($(row_steps_expects[i]).children("td:last").children("textarea").html().trim());#}
-        {#        }#}
-        {##}
-        {#        let caseDetail = {};#}
-        {#        caseDetail["title"] = title;#}
-        {#        caseDetail["pres"] = pre_list;#}
-        {#        caseDetail["steps"] = steps;#}
-        {#        caseDetail["expects"] = expects;#}
-        {##}
-        {#        console.log(caseDetail);#}
-        {##}
-        {#        return caseDetail#}
-        {##}
-        {#    }#}
-
-
-        $(document).ready(function () {
-                $.views.settings.delimiters("<%", "%>");
-                {#            $("#btPreEdit").click(function () {#}
-                {#                editButtonClickEvent($(this));#}
-                {#            });#}
-                {#            $("#btStepEdit").click(function () {#}
-                {#                editButtonClickEvent($(this));#}
-                {#            });#}
-                $("a.list-group-item:first").addClass("active");
-                {#为左侧的导航列表添加点击事件#}
-                $("a.list-group-item").click(function () {
-                    $("a.list-group-item").removeClass("active");
-                    $(this).addClass("active");
-                    {#                进行异步请求#}
-                    submitData($(this).attr("name"));
-                });
-
-                $("#btCanEdit").click(function () {
-
-
-                });
-
-            }
-        )
-    </script>
+    );
+</script>
 
 </body>
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from product.models import Product
 from product import views as pViews
 from testcase.models import TestCase, CaseModule
@@ -149,8 +149,21 @@ def init_case_detail(request):
         # 将当前操作的测试用例ID写入到session
         request.session["current_case"] = first_case.id
         first_case_detail = TestCaseDetail(first_case)
+        print("detail=" + str(first_case_detail.pres))
         first_case = TestCaseData(first_case, users_dict, module_dict())
         return render(request, "pages/testcase/modCase.html",
                       {"first_case": first_case,
                        "first_case_detail": first_case_detail
                        })
+
+
+def del_case(request, case_id=None):
+    """
+    删除当前操作的测试用例
+    """
+    if case_id:
+        case_id = case_id
+    else:
+        case_id = request.session[current_case_id]
+    # TestCase.objects.filter(id=case_id).delete()
+    return redirect("/testcase/list/")

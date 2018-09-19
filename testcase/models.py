@@ -21,7 +21,7 @@ class TestCase(models.Model):
     """
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255, null=False)
-    precondition = models.TextField(max_length=255, default="")
+    precondition = models.TextField(max_length=255, null=True)
     steps = models.TextField(null=False)
     expect = models.TextField(null=False)
     create_user = models.IntegerField(null=False)
