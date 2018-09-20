@@ -22,11 +22,11 @@ class Script(models.Model):
     path = models.CharField(max_length=100, null=False)
     create_time = models.DateTimeField(auto_now_add=True)
     create_user = models.IntegerField()
-    run_count = models.IntegerField()
-    last_run_time = models.DateTimeField()
+    run_count = models.IntegerField(default=0)
+    last_run_time = models.DateTimeField(null=True)
     related_case = models.IntegerField(null=True)
     last_edit_time = models.DateTimeField(auto_now=True)
-    last_edit_user = models.IntegerField()
+    last_edit_user = models.IntegerField(null=True)
     script_type = models.IntegerField()
 
 

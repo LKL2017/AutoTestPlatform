@@ -43,11 +43,8 @@
         }
     </style>
 </head>
-
 <body>
-
 <div id="wrapper">
-
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -346,8 +343,6 @@
         <!-- /.navbar-static-side -->
     </nav>
     <div id="wrapper">
-
-
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -361,137 +356,91 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             上传脚本
                         </div>
                         <div class="panel-body">
-                            <table class="table">
-                                <tr>
-                                    <td>用户名：</td>
-                                    <td>renzy</td>
-                                </tr>
-                                <tr>
-                                    <td>脚本类型：</td>
-                                    <td>
-                                        <select class="form-control">
-                                            <option>WEB测试</option>
-                                            <option>API测试</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>关联测试用例：</td>
-                                    <td>第一个测试用例</td>
-                                </tr>
-
-                            </table>
-                        </div>
-                        <div class="panel-footer">
-                            Panel Footer
-                        </div>
-                    </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            测试用例
-                        </div>
-                        <div class="panel-body">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <span class="fa fa-list"></span>
-                                    用例列表
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>请选择脚本类型</label>
+                                    <select class="form-control" id="scriptType" name="scriptType">
+                                        {% for t in types %}
+                                            <option>{{ t }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
-                                <!-- .panel-heading -->
-                                <div class="panel-body">
-                                    <div class="panel-group" id="listPanel">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#listPanel" href="#dftGroup">默认分组</a>
-                                                </h4>
-                                            </div>
-                                            <div id="dftGroup" class="panel-collapse collapse in">
-                                                <div class="panel-body">
-                                                    <div class="list-group">
-                                                        <a class="list-group-item active">测试用例1</a>
-                                                        <a class="list-group-item">测试用例2</a>
-                                                        <a class="list-group-item">测试用例3</a>
-                                                        <a class="list-group-item">测试用例4</a>
-                                                        <a class="list-group-item">测试用例5</a>
-                                                        <a class="list-group-item">测试用例6</a>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#listPanel"
-                                                       href="#loginGroup">登录</a>
-                                                </h4>
-                                            </div>
-                                            <div id="loginGroup" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                    <div class="list-group">
-                                                        <a class="list-group-item active">测试用例1</a>
-                                                        <a class="list-group-item">测试用例2</a>
-                                                        <a class="list-group-item">测试用例3</a>
-                                                        <a class="list-group-item">测试用例4</a>
-                                                        <a class="list-group-item">测试用例5</a>
-                                                        <a class="list-group-item">测试用例6</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#listPanel"
-                                                       href="#collapseThree">核心功能</a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseThree" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                    <div class="list-group">
-                                                        <a class="list-group-item active">测试用例1</a>
-                                                        <a class="list-group-item">测试用例2</a>
-                                                        <a class="list-group-item">测试用例3</a>
-                                                        <a class="list-group-item">测试用例4</a>
-                                                        <a class="list-group-item">测试用例5</a>
-                                                        <a class="list-group-item">测试用例6</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
+                                <div class="form-group">
+                                    <label>请从右侧选择对应的测试用例</label>
+                                    <input class="form-control" type="text" name="case" id="case" placeholder="请选择测试用例!"
+                                           readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>请选择文件</label>
+                                    <input type="file" style="display: none;" id="scriptFile" accept=".py"
+                                           name="scriptFile">
+                                    <div class="input-group">
+                                        <input id="photoCover" class="form-control" type="text"
+                                               style="height:30px;">
+                                        <span class="input-group-addon">
+													<a href="#" id="caseFile"
+                                                       onclick="$('input[id=scriptFile]').click();">Browse</a>
+												</span>
                                     </div>
-                                    <!-- .panel-body -->
                                 </div>
-                                <!-- /.panel -->
-                            </div>
-                            <!-- /.col-lg-8 -->
-                        </div>
-                        <div class="panel-footer">
-                            Panel Footer
+                                <div class="form-group">
+                                    <label>脚本描述</label>
+                                    <textarea class="form-control" name="desc" id="desc" placeholder="请输入脚本描述！!"
+                                    ></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-default">提交</button>
+                            </form>
                         </div>
                     </div>
                 </div>
                 <!-- /.col-lg-4 -->
+                <div class="col-lg-7">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="fa fa-list"></span>
+                            用例列表
+                        </div>
+                        <!-- .panel-heading -->
+                        <div class="panel-body">
+                            <div class="panel-group" id="listPanel">
+                                {% for case_module,case_list in module_case_dict.items %}
+                                    {#  生成标题#}
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#listPanel"
+                                                   href="#group{{ case_module | timestamp }}">
+                                                    {{ case_module }}</a>
+                                            </h4>
+                                        </div>
+                                        <div id="group{{ case_module | timestamp }}" class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <div class="list-group">
+                                                    {#  生成测试用例列表#}
+                                                    {% for case in case_list %}
+                                                        <a class="list-group-item" href="#"
+                                                           name="{{ case.id }}">{{ case.title }}</a>
+                                                    {% empty %}
+                                                        <p>该模块下无测试用例</p>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- /#page-wrapper -->
-
     </div>
-    <!-- /#wrapper -->
-
-
 </div>
 <!-- /#wrapper -->
 
@@ -511,101 +460,8 @@
 
 <script src="{% static 'js/jsrender.min.js' %}"></script>
 
-<script id="rowTemplate" type="text/x-jsrender">
-
-<tr>
-<td>
-<%:step%>
-</td>
-<td>
-<%:expect%>
-</td>
-</tr>
-
-
-</script>
-
-<script id="preTemplate" type="text/x-jsrender">
-
-<tr>
-<td>
-<%:pre%>
-</td>
-</tr>
-
-
-</script>
-
 
 <script type="text/javascript">
-
-    function submitData(id) {
-        $.ajax({
-                url: "{% url 'testcase:detail' %}",
-                type: "get",
-                data: {'id': id, csrfmiddlewaretoken: '{{ csrf_token }}'},
-                dataType: "json",
-                success: function (data) {
-                    handleData(data)
-                }
-            }
-        )
-    }
-
-    function handleData(data) {
-        {#        用于处理返回的测试用例数据#}
-        {#        修改测试用例的相关信息页面#}
-        let caseInfo = data.caseData;
-        let caseDetail = data.caseDetail;
-        {#                修改测试用例的创建信息#}
-        $("#createUser").html(caseInfo.create_user);
-        $("#createTime").html(caseInfo.create_time);
-        $("#lastEditer").html(caseInfo.last_edit_user);
-        $("#lastEditTime").html(caseInfo.last_edit_time);
-        $("#btCaseId").html(caseInfo.id);
-        $("#detailId").html(caseInfo.id);
-        $("#lbTitle").html(caseInfo.title);
-        $("#detailTitle").html(caseInfo.title);
-        if (caseInfo.editable === true) {
-            $("#btCanEdit").css("display", "block");
-            $("#btCantEdit").css("display", "none");
-        }
-        else {
-            $("#btCanEdit").css("display", "none");
-            $("#btCantEdit").css("display", "block");
-        }
-
-        {# 修改测试用例的详细信息#}
-        {# 修改前置条件#}
-        let pres = caseDetail.pres;
-        let table_pre = $("#tPre").children("tbody");
-        table_pre.empty();
-        let pre_template = $.templates("#preTemplate");
-        let pres_list = [];
-        for (let i = 0; i < pres.length; i++) {
-            pres_list.push({"pre": pres[i]})
-        }
-        let pre_row = pre_template(pres_list);
-        table_pre.html(pre_row);
-
-        {#  修改步骤和期望#}
-
-        let steps = caseDetail.steps;
-        let expects = caseDetail.expects;
-        let row_steps_expects = $("#tSteps").children("tbody");
-        row_steps_expects.empty();
-        let step_expects = [];
-        for (let i = 0; i < steps.length; i++) {
-            let step_expect = [];
-            step_expect["step"] = steps[i];
-            step_expect["expect"] = expects[i];
-            step_expects.push(step_expect);
-        }
-        {#进行模板的渲染#}
-        let rowTemplate = $.templates("#rowTemplate");
-        let row = rowTemplate(step_expects);
-        row_steps_expects.html(row);
-    }
 
     $(document).ready(function () {
             $.views.settings.delimiters("<%", "%>");
@@ -620,13 +476,8 @@
             $("a.list-group-item").click(function () {
                 $("a.list-group-item").removeClass("active");
                 $(this).addClass("active");
-                {#                进行异步请求#}
-                submitData($(this).attr("name"));
+                $("#case").val($(this).html());
             });
-            $("#btCanEdit").click(function () {
-                window.location.href = '{% url "testcase:caseDetail" %}';
-            });
-
         }
     )
 </script>
