@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # 工具方法模组
-
-
-
+import os
 
 
 def first_letter_of_chinese(string):
@@ -69,6 +67,13 @@ def first_letter_of_chinese(string):
     for l in lst:
         charLst.append(single_get_first(l))
     return ''.join(charLst)
+
+
+def path_script_storage():
+    """返回script的路径"""
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    storage_dir = os.path.join(BASE_DIR, "storage/scripts")
+    return storage_dir
 
 
 if __name__ == '__main__':

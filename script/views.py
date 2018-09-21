@@ -3,6 +3,9 @@ from django.shortcuts import render
 from script.form import ScriptUploadForm
 from script.models import ScriptType
 from testcase.models import CaseModule, TestCase
+import os
+import time
+import utils.utilsFunc
 
 
 # Create your views here.
@@ -43,3 +46,33 @@ def init_upload_page(request):
             script_case = upload_form.case
             script_type = upload_form.scriptType
             script = ScriptType
+
+
+def _create_script_folder(script_type: list):
+    """用于在storage中的脚本分类文件夹"""
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    storage_dir = os.path.join(BASE_DIR, "storage/scripts")
+    dirs_need_created = [folder for folder in script_type if folder not in storage_dir]
+    if len(dirs_need_created) == 0:
+        return
+    for folder_name in dirs_need_created:
+        os.mkdir(os.path.join(storage_dir, folder_name))
+
+
+def _create_script_file(file, s_type):
+    """在指定的目录下创建文件
+        为了解决重名问题，所有的文件在传输到服务器后，名称将统一变为name+当前毫秒数+后缀名的方式
+    """
+    index_of_suffix = str(file.name).rindex(".")
+    file_name = file.name[0:index_of_suffix] + "." + str(time.time()) + file.name[
+                                                                        index_of_suffix:]
+    new_file_path = os.path.join(utils.utilsFunc.path_script_storage(), s_type)
+    try:
+        new_file = open(os.path.join(new_file_path, file_name), "w", encoding="utf-8")
+        with open(file, "w", encoding="utf-8", errors="strict") as origin_file:
+            for line in origin_file.read():
+                new_file.write(line)
+    except ValueError:
+        return False
+    else:
+        return True
